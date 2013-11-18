@@ -10,13 +10,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
     
     $bdMi = new MYSQL_MIDB();
     
-    //***********GERAÇÃO DO ID DO MEMORANDO*************/
-    //Consulta o "maior ID" de memorando da tabela (ou seja, o último) e o incrementa, gerando o nome do próximo.
-    $ultimoMemorando = $bdMi->sql("SELECT MAX(idMemorando) FROM memorando");
-    $numeroMemorando = $ultimoMemorando[0] + 1;
-    
-    $selectMemorando = $bdMi->sql("SELECT * FROM memorando WHERE idMemorando=$numeroMemorando");
-    
+    //$resultadoSelectUnidadesUsuario = $bdMi->sql("SELECT nome FROM unidade WHERE ");
     ?>
     <!DOCTYPE HTML>
     <html lang="pt-br">
@@ -45,6 +39,47 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                  });
             </script>
             
+            <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+            <script type="text/javascript">
+                
+                $(document).ready(function(){
+                    
+                    $("#salvaMI").click( function(){
+                        var destinatario = $("#txtDestinatario").val();
+                        var cargo = $("#txtCargo").val();
+                        var referencia = $("#txtReferencia").val();
+                        var titulo = $("#txtTitulo").val();
+                        var corpo = $("#txtCorpo").val();
+                        var data = $("#data").val();
+                        var selecao = $("#selecao").val();
+                        
+                        $.post("cSalva-mi(copia).php", 
+                        { 
+                            destinatario: destinatario,
+                            cargo: cargo,
+                            referencia: referencia,
+                            titulo: titulo,
+                            corpo: corpo,
+                            data: data,
+                            selecao: selecao
+                        }, 
+                        function( retorno ){
+                            
+                            if( retorno == 1)
+                            {
+                                alert( "Salvo" );
+                            }
+                            else
+                                alert( "Erro ao salvar" );
+       
+                        })
+                        
+                        return false;
+                    })
+                    
+                })
+                
+            </script>    
             
             <!-- /TinyMCE -->
         </head>
@@ -81,7 +116,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             
                             <p class="botao" align="center">
                                 <button type="submit" formaction="cVisualiza-mi.php" formtarget="_blank">VISUALIZAR</button>
-                                <button id="salvar" onClick="salvarMemorando();">SALVAR</button>
+                                <button id="salvaMI" type="submit">SALVAR</button>
                                 <button type="submit" formaction="cGera-mi.php" >EMITIR</button>
                             </p>
                             
