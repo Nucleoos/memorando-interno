@@ -37,6 +37,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
             <style type="text/css">
                 @import url("estilo.css") screen; <!--Design para Desktop -->
             </style>
+        
         </head>
         <!-- Body -->
         <body>
@@ -52,7 +53,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                     <fieldset class="options">
                         <legend>Gerador de MI</legend>
                         <p>
-                            <button onclick="window.location='vCriar.php'">CRIAR</button>
+                            <button onclick="window.location='cGetIdMemorando.php'" >CRIAR</button>
                             <button onclick="window.location='vConsultar.php'">CONSULTAR</button>
                         </p>
                     </fieldset>
