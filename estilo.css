@@ -202,6 +202,12 @@ fieldset{
     border: 1px solid #C6C6C6;
 }
 
+.fieldsetInterno{
+    
+    width: 80%; 
+    border: 1px solid #C6C6C6;
+}
+
 label{
     float:left;
     width:70%;

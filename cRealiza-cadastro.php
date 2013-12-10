@@ -54,6 +54,8 @@ if (isset($_SESSION['login']) and isset($_SESSION['senha'])) {
         $txtPortarira = $_POST["txtPortarira"];
         $txtCargo = $_POST["txtCargo"];
         $selPermissao = $_POST["selPermissao"];
+        $chkUnidade = array();
+        
         if (isset($_POST["chkUnidade"])) { //Receber dados do checkbox. Não é a melhor maneira, mas foi como consegui, rs.
             for ($i = 0; $i <= (count($_POST["chkUnidade"]) - 1); $i++) {
                 $chkUnidade[$i] = $_POST["chkUnidade"][$i];
@@ -90,6 +92,7 @@ if (isset($_SESSION['login']) and isset($_SESSION['senha'])) {
 
         }
         //Realização de inserção na tabela "usuario_has_unidade"
+        $resultadoInsertUsuarioHasUnidade = 0;
         for ($i = 0; $i <= (count($chkUnidade) - 1); $i++) {
             $resultadoInsertUsuarioHasUnidade = $bdMi->sql("INSERT INTO usuario_has_unidade (idUsuario,idUnidade) VALUES ($idUsuario,$chkUnidade[$i])");
             if ($resultadoInsertUsuarioHasUnidade <= 0) {

@@ -26,7 +26,7 @@ if (!(empty($_POST['txtMail']))) {
         $senha = mysql_result($resultado, 0, "senha");
 
         //Geração de chave aleatória para redefinição de senha
-        $chave = geraChave();
+        $chave = crypt($txtLogin);
 
         //Inserção da chave no banco para posterior comparação.
         $resultadoInsert = $bdMi->sql("INSERT INTO `chave` (idUsuario,chave) VALUES ('$idUsuario','" . $chave . "')");
@@ -41,9 +41,9 @@ Você está recebendo esta mensagem pois solicitou a redefinição de senha no S
             
 Caso não tenha solicitado, favor ignorar a mensagem.
             
-Caso tenha solicitado, clique no link a seguir e insira a chave de segurança no campo solicitado:
+Caso tenha solicitado, clique no link a seguir:
             
-http://localhost/mi/vRedefinir-senha.php?keyID=" . $chave . "
+http://localhost/mi/cConfirma-chave.php?keyID=" . $chave . "
             
 ---------------------------------------------------------------
 Sistema de Emissão de MI - FACOM - Universidade Federal de Uberlândia.
@@ -51,13 +51,21 @@ Esta é uma mensagem automática. Não a responda.
             ";
 
         $resultadoEmail = mail($destinatario, $assunto, $mensagem, $headers);
-        echo var_dump($resultadoEmail);
+        if($resultadoEmail == true){
         ?>
         <script language="JavaScript">
             alert("Um e-mail de redefinição de senha foi enviado para " + "<?php echo $usuario ?>" + ".");
             window.location = ("index.php");
         </script>
         <?php
+        } else {
+            ?>
+        <script language="JavaScript">
+            alert("Falha ao enviar e-mail para " + "<?php echo $usuario ?>" + ".");
+            window.history = ("index.php");
+        </script>
+        <?php
+        }
     } else {
         ?>
         <script language="JavaScript">
