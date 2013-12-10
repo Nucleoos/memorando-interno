@@ -12,15 +12,14 @@ include_once("conecta-mi-db.php");
 $bdMi = new MYSQL_MIDB();
 
 //Verificação de usuário no banco
-if (!((empty($_POST['txtMail']) && empty($_POST['txtChave'])))) {
+if (!(empty($_GET['keyID']))) {
 
-    $txtMail = $_POST['txtMail'];
-    $txtChave = $_POST['txtChave'];
+    $chaveRecebida = $_REQUEST['keyID'];
 
     //Seleção da chave no banco
-    $resultado = $bdMi->sql("SELECT t.idUsuario, p.chave FROM usuario t, chave p WHERE t.emailInstitucional =  '" . $txtMail . "' AND p.idUsuario = t.idUsuario");
+    $resultado = $bdMi->sql("SELECT t.idUsuario, p.chave FROM usuario t, chave p WHERE p.chave =  '" . $chaveRecebida . "' AND p.idUsuario = t.idUsuario");
     
-    //Armazenamento do email institucional    
+    //Início da    
     $idUsuario = mysql_result($resultado, 0,"idUsuario");
     session_start();
     $_SESSION['idUsuario'] = $idUsuario;
@@ -28,10 +27,10 @@ if (!((empty($_POST['txtMail']) && empty($_POST['txtChave'])))) {
     //Verificação de existência de usuário
     if (mysql_num_rows($resultado) > 0) {
 
-        $chave = mysql_result($resultado, 0, "chave");
+        $chaveBD = mysql_result($resultado, 1, "chave");
 
         //Verificação de chave no banco
-        if ($chave == $txtChave) {
+        if ($chaveBD == $chaveRecebida) {
             ?>
             <script language="JavaScript">
                 window.location = ("vRedefinir-senha.php");
@@ -48,10 +47,17 @@ if (!((empty($_POST['txtMail']) && empty($_POST['txtChave'])))) {
     } else {
         ?>
         <script language="JavaScript">
-            alert("E-mail Institucional não cadastrado!");
+            alert("Chave não encontrada ou inválida!");
             window.location = ("vRecover.php");
         </script>
         <?php
     }
+}else{
+    ?>
+        <script language="JavaScript">
+            alert("Chave inválida!");
+            window.location = ("vRecover.php");
+        </script>
+    <?php
 }
 ?>

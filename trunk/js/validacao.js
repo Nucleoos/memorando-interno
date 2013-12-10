@@ -23,16 +23,16 @@ function checaLoginVazio(formLogin)
 }
 
 //Função de checagem de seleção de Unidade no cadastro de usuário
-function checaUnidadeSelecionada(formUsuario)
-{
-    if(formUsuario.selUnidade.value == '0')
-    {
-        alert("Selecione uma unidade!");
-        formUsuario.selUnidade.focus();
-        return false;
-    }
-    return true;
-}
+//function checaUnidadeSelecionada(formUsuario)
+//{
+//    if(formUsuario.selUnidade.value == '0')
+//    {
+//        alert("Selecione uma unidade!");
+//        formUsuario.selUnidade.focus();
+//        return false;
+//    }
+//    return true;
+//}
 
 //Função de confirmação de deleção de unidade
 function confirmaDeletaUnidade(id)
@@ -72,6 +72,20 @@ function encaminhaUnidade(id, nomeUnidade)
     $("#formUnidade").submit();
 }
 
+//Função que pega o ID do usuário da linha selecionada e encaminha para a página de edição
+function encaminhaUsuario(id, nomeUsuario, emailUsuario, senhaUsuario, tituloUsuario, portariaUsuario, cargoUsuario, permissaoUsuario)
+{    
+    $("#idUsuario").val(id);
+    $("#txtNome").val(nomeUsuario);
+    $("#txtEmail").val(emailUsuario);
+    $("#txtSenha").val(senhaUsuario);
+    $("#txtTitulo").val(tituloUsuario);
+    $("#txtPortaria").val(portariaUsuario);
+    $("#txtCargo").val(cargoUsuario);
+    $("#selPermissao").val(permissaoUsuario);
+    $("#formUsuario").submit();
+}
+
 //Função que pega o ID da linha do usuário a ser editado e executa um post para a página de edição
 function visualizarMemorando(){
     var mensagem = $("#formMemorando").attr("action");
@@ -103,4 +117,14 @@ function salvarMemorando(){
 function emitirMemorando(){
     $("#formMemorando").attr("action", "");
     $("#formMemorando").submit();
+}
+
+function verificaCheckBoxVazio(){
+    if(jQuery("input[name='chkUnidade[]']:checked").length == 0){        
+        alert("Selecione ao menos uma unidade para este usuário!");
+        return false;        
+    }else{
+        return true;
+    }
+    
 }

@@ -31,41 +31,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                 @import url("estilo.css") screen; <!--Design para Desktop -->
             </style>
             <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
-            <script>
-                        
-                var idVariable = 1;
-                $(function(){
-            
-                    //alert("Olá mundo!");
-
-                    $("select").live('change', function(){
-                                            
-                        var valor = $(this).find("option:selected").val();
-                                            
-                        $(this).attr("id", idVariable);
-                        idVariable++;
-                                            
-                                            
-                        if(valor){
-
-                            $("select option[value='" + valor + "']").each(function() {
-                                if ( $(this).parent().attr("id") != (idVariable-1) ) {
-                                    $(this).remove();
-                                }
-                            });
-
-                            var modelo = $("#teste label").html();
-
-                            $("#teste").append("<label>" + modelo);
-
-                        }
-                                            
-
-                    })         
-                });
-
-                        
-            </script> 
+            <script type="text/javascript" src="js/validacao.js">  </script> 
 
             <!--             Validações 
                         <script src="js/validacao.js"></script>
@@ -97,7 +63,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
 
                 <section id="corpo">
                     <!-- Formul�rio -->
-                    <form method="post" enctype="application/x-www-form-urlencoded" action="cRealiza-cadastro.php" name="formUsuario" autocomplete="off" onSubmit="return checaUnidadeSelecionada();">
+                    <form method="post" enctype="application/x-www-form-urlencoded" action="cRealiza-cadastro.php" name="formUsuario" autocomplete="off" onSubmit="return verificaCheckBoxVazio();">
                         <!-- Fieldset -->
                         <fieldset>
                             <legend>Cadastro de Usuário</legend>
@@ -124,7 +90,8 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
 
                             <div align="center">
                             <p id="teste" class="campo">
-                                <label>Unidade: 
+                            <fieldset class="fieldsetInterno">
+                                <legend>Unidade:</legend>
                                     <table border="0" width="70%">
                                         <?php
                                         //Consulta de unidades do sistema
@@ -155,7 +122,8 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                         }
                                         ?>
                                     </table>
-                                </label></p>   </div>                                       
+                            </fieldset>
+                                </p>   </div>                                       
 
                             <p class="botao" align="center"><button name="btCadastrarUsuario">CADASTRAR</button></p>
                         </fieldset>
