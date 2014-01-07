@@ -49,6 +49,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                         var cargo = $("#txtCargo").val();
                         var referencia = $("#txtReferencia").val();
                         var titulo = $("#txtTitulo").val();
+                        tinymce.triggerSave();
                         var corpo = $("#txtCorpo").val();
                         var data = $("#data").val();
                         var selecao = $("#selecao").val();
@@ -64,8 +65,8 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             selecao: selecao
                         }, 
                         function( retorno ){
-                            
-                            if( retorno == 1)
+                           
+                            if( retorno )
                             {
                                 alert( "Salvo" );
                             }
