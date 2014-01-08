@@ -9,9 +9,8 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
     include("conecta-mi-db.php");
     
     $bdMi = new MYSQL_MIDB();
-    
     //$resultadoSelectUnidadesUsuario = $bdMi->sql("SELECT nome FROM unidade WHERE ");
-    ?>
+?>
     <!DOCTYPE HTML>
     <html lang="pt-br">
 
@@ -53,6 +52,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                         var corpo = $("#txtCorpo").val();
                         var data = $("#data").val();
                         var selecao = $("#selecao").val();
+                        var numeroMemorando = <?php echo $_SESSION["numeroMemorando"];?>;
                         
                         $.post("cSalva-mi(copia).php", 
                         { 
@@ -62,10 +62,10 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             titulo: titulo,
                             corpo: corpo,
                             data: data,
-                            selecao: selecao
+                            selecao: selecao,
+                            numeroMemorando: numeroMemorando 
                         }, 
                         function( retorno ){
-                           
                             if( retorno )
                             {
                                 alert( "Salvo" );
