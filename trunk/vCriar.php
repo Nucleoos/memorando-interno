@@ -78,6 +78,40 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                         return false;
                     })
                     
+                    $("#emiteMI").click( function(){
+                        var destinatario = $("#txtDestinatario").val();
+                        var cargo = $("#txtCargo").val();
+                        var referencia = $("#txtReferencia").val();
+                        var titulo = $("#txtTitulo").val();
+                        tinymce.triggerSave();
+                        var corpo = $("#txtCorpo").val();
+                        var data = $("#data").val();
+                        var selecao = $("#selecao").val();
+                        var numeroMemorando = <?php echo $_SESSION["numeroMemorando"];?>;
+                        
+                        $.post("cEmite-mi.php", 
+                        { 
+                            destinatario: destinatario,
+                            cargo: cargo,
+                            referencia: referencia,
+                            titulo: titulo,
+                            corpo: corpo,
+                            data: data,
+                            selecao: selecao,
+                            numeroMemorando: numeroMemorando 
+                        }, 
+                        function( retorno ){
+                            if( retorno )
+                            {
+                                alert( "Emitido" );
+                            }
+                            else
+                                alert( "Erro ao Emitir" );
+       
+                        })
+                        
+                    })
+                    
                 })
                 
             </script>    
@@ -118,7 +152,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             <p class="botao" align="center">
                                 <button type="submit" formaction="cVisualiza-mi.php" formtarget="_blank">VISUALIZAR</button>
                                 <button id="salvaMI" type="submit">SALVAR</button>
-                                <button type="submit" formaction="cGera-mi.php" >EMITIR</button>
+                                <button id="emiteMI" type="submit" >EMITIR</button>
                             </p>
                             
                         </fieldset>

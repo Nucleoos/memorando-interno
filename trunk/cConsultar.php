@@ -19,11 +19,12 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
         //Recebimento das variáveis do formulário
         $txtPesquisa = $_GET['txtPesquisa'];
         $coluna = $_GET['radioPesquisa'];
-
+        $txtPesquisa2 = $txtPesquisa;
         //Conversão das variáveis do radiogroup em tabela no banco
         if ($coluna == 'idPesquisaTudo') {
 
             $pesquisa = explode(" ", $txtPesquisa);
+           
             $termos = count($pesquisa);
             for ($c = 0; $c < $termos; $c++) {
                 $selectMemorandos = $bdMi->sql("SELECT * FROM memorando m, usuario u, destinatario d WHERE m.idMemorando LIKE '%$pesquisa[$c]%' OR m.data LIKE '%$pesquisa[$c]%' OR u.nome LIKE '%$pesquisa[$c]%' OR d.nome LIKE '%$pesquisa[$c]%' OR m.titulo LIKE '%$pesquisa[$c]%' OR m.corpo LIKE '%$pesquisa[$c]%' ORDER BY idMemorando DESC");
@@ -55,7 +56,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
             $selectMemorandos = $bdMi->sql("SELECT * FROM memorando WHERE titulo LIKE '%$txtPesquisa%' ORDER BY idMemorando DESC");
         } else if ($coluna == 'rdPesquisaCorpo') {
 
-            $selectMemorandos = $bdMi->sql("SELECT * FROM memorando WHERE corpo LIKE '%$txtPesquisa%' ORDER BY idMemorando DESC");
+            $selectMemorandos = $bdMi->sql("SELECT * FROM memorando WHERE corpo LIKE '%$txtPesquisa2%' ORDER BY idMemorando DESC");
         }
 
         //Consulta de memorandos do sistema utilizando filtro
@@ -75,6 +76,8 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                 <td><strong>Destinatário</strong></td>
                 <td><strong>Assunto</strong></td>
                 <td><strong>Corpo</strong></td>
+                <td><strong>Emitido</strong></td>
+                
             </tr>
 
             <?php
@@ -116,6 +119,9 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                 if (strlen($corpo) > 40) {
                     $corpo = substr($corpo, 0, 40) . "...";
                 }
+                
+                $emitido = mysql_result($selectMemorandos, $contadorResultado, "emitido") == 1 ? "sim" : "nao";
+                
                 if ($c % 2 != 0) {
                     ?>
                     <tr style="background-color:#E7E7E6;">
@@ -125,13 +131,36 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                         <td><?php echo $destinatario; ?></td>
                         <td><?php echo $titulo; ?></td>
                         <td><?php echo $corpo; ?></td>
+                        <td><?php echo $emitido; ?></td>
+                        
                         <td align="center" width="4%">
                             <a
                                 href="#" title="Editar">
-                                <img src="imagens\edit.png">
-                            </a>
-                        </td>
-                        <td align="center" width="4%"><a onClick="confirmaDeletaMemorando(<?php echo "'" . $numeroMemorando . "'"; ?>);" href="#" title="Excluir"><img src="imagens\delete.png"></a></td>
+                                <?php
+                                    if( $emitido == "sim" )
+                                    {
+                                ?>
+                                                <img src="imagens\edit_not.png">
+                                            </a>
+                                        </td>
+                                        
+                                        <td align="center" width="4%"><a href="#" title="Excluir"><img src="imagens\delete_not_v1.png"></a></td>
+                        
+                                <?php
+                                    }
+                                    else
+                                    {
+                                ?>
+                                                <img src="imagens\edit_yes.png">
+                                            </a>
+                                        </td>
+                                        <td align="center" width="4%"><a onClick="confirmaDeletaMemorando(<?php echo "'" . $numeroMemorando . "'"; ?>);" href="#" title="Excluir"><img src="imagens\delete_yes_v1.png"></a></td>
+                        
+                                <?php
+                                    }
+                                ?>
+                            
+                        
                     </tr>
                     <?php
                 } else {
@@ -143,14 +172,38 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                         <td><?php echo $destinatario; ?></td>
                         <td><?php echo $titulo; ?></td>
                         <td><?php echo $corpo; ?></td>
+                        <td><?php echo $emitido; ?></td>
+                        
                         <td align="center" width="4%">
                             <a 
                                 href="#" title="Editar">
-                                <img src="imagens\edit.png">
-                            </a>
-                        </td>
-                        <td align="center" width="4%"><a onClick="confirmaDeletaMemorando(<?php echo "'" . $numeroMemorando . "'"; ?>);" href="#" title="Excluir"><img src="imagens\delete.png"></a></td>
-                    </tr>                
+                                
+                                <?php
+                                    if( $emitido == "sim" )
+                                    {
+                                ?>
+                                                <img src="imagens\edit_not.png">
+                                            </a>
+                                        </td>
+                                        <td align="center" width="4%"><a href="#" title="Excluir"><img src="imagens\delete_not_v1.png"></a></td>
+
+                                <?php
+                                    }
+                                    else
+                                    {
+                                ?>
+                                                <img src="imagens\edit_yes.png">
+                                            </a>
+                                        </td>
+                                        <td align="center" width="4%"><a onClick="confirmaDeletaMemorando(<?php echo "'" . $numeroMemorando . "'"; ?>);" href="#" title="Excluir"><img src="imagens\delete_yes_v1.png"></a></td>
+
+                                <?php
+                                    }
+                                ?>
+                                        
+                                
+                            
+                        </tr>                
                     <?php
                 }
                 $c++;

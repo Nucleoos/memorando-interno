@@ -7,9 +7,8 @@
     $bdMi = new MYSQL_MIDB();
 
     $selectMemorando = $bdMi->sql("SELECT MAX(idMemorando) FROM memorando");
-    $ultimoMemorando = mysql_fetch_array($selectMemorando);
     
-    $_SESSION['numeroMemorando'] = $ultimoMemorando[0] + 1;
+    $_SESSION['numeroMemorando'] = mysql_result($selectMemorando, 0) + 1;
     
     header("Location:vCriar.php");
 ?>
