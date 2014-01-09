@@ -34,7 +34,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                 <!-- Section -->
                 <section id="corpo">
                     <!-- Fieldset -->
-                    <fieldset align="left">
+                    <fieldset>
                         <legend>Consulta de Memorandos</legend>
                         <!-- Formulário de Usuário-->
                         <form name="formMemorando">
@@ -54,7 +54,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                     <input id="radioPesquisa6" type="radio" name="radioPesquisa" class="radioPesquisa" onclick="alteraCampoPesquisa(this.value);" value="rdPesquisaCorpo"> Corpo
                                 </p>
 
-                                <p align="center" id="campoPesquisa"><label class="labelPesquisa"><input class="info" type=name id="txtPesquisa" name="txtPesquisa" autocomplete="off" placeholder="Selecione uma das opções acima e digite aqui a sua busca" /></label></p>
+                                <p align="center" id="campoPesquisa"><label class="labelPesquisa"><input class="info" type="text" id="txtPesquisa" name="txtPesquisa" autocomplete="off" placeholder="Selecione uma das opções acima e digite aqui a sua busca" /></label></p>
 
                                 <p class="botaoPesquisa"><input type="button" class="buttonSubmit" id="btPesquisarMemorando" onclick="submeter();" value="PESQUISAR"></p>
 
