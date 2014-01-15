@@ -32,6 +32,10 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
             <!-- TinyMCE -->
             <script type="text/javascript" src="../resources/tinymce/tinymce.min.js"></script>
             
+             <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+            
             <script type="text/javascript">
                 tinymce.init({
                     selector: "textarea"
@@ -45,7 +49,65 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                 $(document).ready(function(){
                     
                     $('#data').datepicker({ dateFormat: 'yy-mm-dd' });
-                
+             
+                    $(function() {
+                        function split( val ) {
+                        return val.split( /,\s*/ );
+                        }
+                        function extractLast( term ) {
+                        return split( term ).pop();
+                        }
+
+                        $( "#autocomplete" )
+                        // don't navigate away from the field on tab when selecting an item
+                        .bind( "keydown", function( event ) {
+                        if ( event.keyCode === $.ui.keyCode.TAB &&
+                        $( this ).data( "autocomplete" ).menu.active ) {
+                        event.preventDefault();
+                        }
+                        })
+                        .autocomplete({
+                        source: function( request, response ) {
+                            $.getJSON( "../control/autocomplete.php",{
+                                term: extractLast( request.term )},
+                                function( data ) {
+                                response( $.map( data, function( item ) {
+                                      return {
+                                            id: item.id,
+                                            label: item.nomeUsuario + ", " + item.nomeUnidade,
+                                            value: item.nomeUsuario                  
+                                      }
+                                }));
+                            }
+                        );
+                        },
+                        search: function() {
+                            // custom minLength
+                            var term = extractLast(this.value);
+                            if (term.length < 1) {
+                                return false;
+                            }
+                        },
+                        focus: function() {
+                            // prevent value inserted on focus
+                            return false;
+                        },
+//                        select: function( event, ui ) {
+//                            $('#companyautocomplete').val(ui.item.value);
+//                            $('#companyid').val(ui.item.compid);
+//                            $('#c_address').val(ui.item.address);
+//                            $('#c_phone').val(ui.item.phone);
+//                            if (ui.item.problematic!=1){
+//                                $('#companyautocomplete').removeClass("ui-autocomplete-error");
+//                                document.getElementById('Sendbutton').style.display="block";
+//                            } else {
+//                                $('#companyautocomplete').addClass("ui-autocomplete-error");
+//                                document.getElementById('Sendbutton').style.display="none";
+//                            }
+//                        }
+                      });
+                    });
+
                     $("#txtUnidadeDestinatario").live('change', function(){
                         
                         var idUnidade = $("#txtUnidadeDestinatario").val();
@@ -153,40 +215,27 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
             
             <!-- /TinyMCE -->
         </head>
+        
         <!-- Body -->
         <body>
+            
             <?php include("vCabecalho-interno.html"); ?>
             <div id="divPrincipal">
+                
                 <div id="menu">
                     <?php include("menu.html"); ?>
                 </div>
+                
                 <!-- Section -->
                 <section id="corpo">
                     <!-- Formul�rio -->
                     <form id="formMemorando" method="post">
                         <!-- Fieldset -->
                         <fieldset>
-
-                            <legend>Criação de Memorando Interno</legend>
-
-                            <p class="campo"><label>Unidade do Destinatário: 
-                                    <select id="txtUnidadeDestinatario" class="info" type="text" name="txtDestinatario" required>
-                                        <?php
-                                        //Consulta de unidades do sistema
-                                        //Linhas com os resultados do SELECT
-                                        $selectUnidades = $bdMi->sql("SELECT * FROM unidade");
-                                        if (mysql_num_rows($selectUnidades) > 0) {
-                                            echo "<option value=\"default\" ></option>";
-                                            while ($resultadoUnidades = mysql_fetch_array($selectUnidades)) {
-                                                echo "<option value=\"$resultadoUnidades[0]\">$resultadoUnidades[1]</option>";         
-                                            }
-                                        } else {
-                                            echo "Não há unidades cadastradas!";
-                                        }
-                                        ?>
-                                    </select></label></p>
+                              
+                            <legend>Criação de Memorando Interno</legend>                             
                             
-                            <p id="destinatario" hidden="true" class="campo"><label>Destinatário: <select id="txtDestinatario" class="info" type="text" name="txtDestinatario" value="juca" required></select></label></p>
+                            <p id="destinatario" class="campo"><label>Destinatário: <input id="autocomplete" class="info" type="text" required></label></p>
 
                             <p class="campo"><label>Cargo: <input id="txtCargo" class="info" type="text" name="txtCargo" value="gerente" required></label></p>
 
@@ -198,6 +247,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             <p class="campo"><label>Corpo do Memorando Interno: <textarea id="txtCorpo" rows="30" cols="90" name="txtCorpo"></textarea></label></p>
 
                             <p class="campo"><label>Data de Emissão: <input id="data" type="text" name="data"  required></label></p>
+                            
 
                             <p class="campo"><label>Emissário: 
                                     <select id="selecao" name="selecao">
