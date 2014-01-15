@@ -49,6 +49,8 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                 $(document).ready(function(){
                     
                     $('#data').datepicker({ dateFormat: 'yy-mm-dd' });
+                    $('#destinatariohidden').hide();
+                
              
                     $(function() {
                         function split( val ) {
@@ -58,7 +60,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                         return split( term ).pop();
                         }
 
-                        $( "#autocomplete" )
+                        $( "#txtDestinatario" )
                         // don't navigate away from the field on tab when selecting an item
                         .bind( "keydown", function( event ) {
                         if ( event.keyCode === $.ui.keyCode.TAB &&
@@ -74,8 +76,8 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                 response( $.map( data, function( item ) {
                                       return {
                                             id: item.id,
-                                            label: item.nomeUsuario + ", " + item.nomeUnidade,
-                                            value: item.nomeUsuario                  
+                                            //label: item.nomeUsuario + ", " + item.nomeUnidade,
+                                            value: item.titulo + " " + item.nome + ", " + item.cargo              
                                       }
                                 }));
                             }
@@ -93,58 +95,26 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             return false;
                         },
 //                        select: function( event, ui ) {
-//                            $('#companyautocomplete').val(ui.item.value);
-//                            $('#companyid').val(ui.item.compid);
-//                            $('#c_address').val(ui.item.address);
-//                            $('#c_phone').val(ui.item.phone);
-//                            if (ui.item.problematic!=1){
-//                                $('#companyautocomplete').removeClass("ui-autocomplete-error");
-//                                document.getElementById('Sendbutton').style.display="block";
-//                            } else {
-//                                $('#companyautocomplete').addClass("ui-autocomplete-error");
-//                                document.getElementById('Sendbutton').style.display="none";
-//                            }
+//                            $('#destinatario').val(ui.item.id);
+////                            $('#companyid').val(ui.item.compid);
+////                            $('#c_address').val(ui.item.address);
+////                            $('#c_phone').val(ui.item.phone);
+////                            if (ui.item.problematic!=1){
+////                                $('#companyautocomplete').removeClass("ui-autocomplete-error");
+////                                document.getElementById('Sendbutton').style.display="block";
+////                            } else {
+////                                $('#companyautocomplete').addClass("ui-autocomplete-error");
+////                                document.getElementById('Sendbutton').style.display="none";
+////                            }
 //                        }
                       });
                     });
 
-                    $("#txtUnidadeDestinatario").live('change', function(){
-                        
-                        var idUnidade = $("#txtUnidadeDestinatario").val();
-                        if( idUnidade == "default" )
-                        {
-                            $("#destinatario").hide();
-                        }
-                        else
-                        {
-                            
-                            $.post("../control/SelectUnidades.php", 
-                            {
-                                idUnidade: idUnidade
-                            }, 
-                            function (data) {
-                                // console.log(data);
-                                // jQuery will convert the string "['foo', 'bar', 'blah', 'baz']" into a JavaScript object
-                                // (an array in this case) and pass as the first parameter
-                                    $("#txtDestinatario").empty();
-    
-                                    for(var i = 0; i < data.length; i++) {
-                                    
-                                    $("#txtDestinatario").append( "<option value=" + data[i][0] + ">" + data[i][1] + "</option>" );
-                                }
-                            }, "json");
-                            
-                            $("#destinatario").show();
-                        }
-                   
-        
-                    });
+   
                     
                     $("#salvaMI").click( function(){
-                        var destinatario = $("#txtDestinatario").val();
-                        var cargo = $("#txtCargo").val();
-                        var referencia = $("#txtReferencia").val();
-                        var titulo = $("#txtTitulo").val();
+                        var destinatario = $("#txtDestinatario").val();   
+                        var referencia = $("#txtReferencia").val();                 
                         tinymce.triggerSave();
                         var corpo = $("#txtCorpo").val();
                         var data = $("#data").val();
@@ -154,15 +124,13 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                         $.post("../control/cSalva-mi.php", 
                         { 
                             destinatario: destinatario,
-                            cargo: cargo,
                             referencia: referencia,
-                            titulo: titulo,
                             corpo: corpo,
                             data: data,
-                            selecao: selecao,
+                            emissario: selecao,
                             numeroMemorando: numeroMemorando 
                         }, 
-                        function( retorno ){
+                        function( retorno ){             
                             if( retorno == true )
                             {
                                 alert( "Salvo" );
@@ -176,10 +144,8 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                     });
                     
                     $("#emiteMI").click( function(){
-                        var destinatario = $("#txtDestinatario").val();
-                        var cargo = $("#txtCargo").val();
+                        var destinatario = $("#txtDestinatario").val();      
                         var referencia = $("#txtReferencia").val();
-                        var titulo = $("#txtTitulo").val();
                         tinymce.triggerSave();
                         var corpo = $("#txtCorpo").val();
                         var data = $("#data").val();
@@ -189,9 +155,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                         $.post("../control/cEmite-mi.php", 
                         { 
                             destinatario: destinatario,
-                            cargo: cargo,
                             referencia: referencia,
-                            titulo: titulo,
                             corpo: corpo,
                             data: data,
                             selecao: selecao,
@@ -235,14 +199,9 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                               
                             <legend>Criação de Memorando Interno</legend>                             
                             
-                            <p id="destinatario" class="campo"><label>Destinatário: <input id="autocomplete" class="info" type="text" required></label></p>
-
-                            <p class="campo"><label>Cargo: <input id="txtCargo" class="info" type="text" name="txtCargo" value="gerente" required></label></p>
-
-                            <p class="campo"><label>Referência: <input id="txtReferencia" class="info" type="text" name="txtReferencia" value="lindo" required></label></p>
-
-                            <p class="campo"><label>Título: <input id="txtTitulo" class="info" type="text" name="txtTitulo" value="ola gato" required></label></p>
-
+                            <p id="destinatario" class="campo"><label>Destinatário: <input id="txtDestinatario" class="info" type="text" name="txtDestinatario" required></label></p>   
+                          
+                            <p class="campo"><label>Referência: <input id="txtReferencia" class="info" type="text" name="txtReferencia" required></label></p>
 
                             <p class="campo"><label>Corpo do Memorando Interno: <textarea id="txtCorpo" rows="30" cols="90" name="txtCorpo"></textarea></label></p>
 

@@ -15,28 +15,48 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
     $bdMi = new MYSQL_MIDB();
 
     //**********RECEBIMENTO DAS VARIÁRVEIS**********/
+    //**********RECEBIMENTO DAS VARIÁRVEIS**********/
     $txtDestinatario = $_POST['txtDestinatario'];
-    $txtCargo = $_POST['txtCargo'];
-    $txtReferencia = $_POST['txtReferencia'];
-    $txtTitulo = $_POST['txtTitulo'];
-    $txtCorpo = $_POST['txtCorpo'];
+    
+    $split_strings = preg_split('/[\ \n\,]+/', $txtDestinatario);
+    
+    $tituloDestinatario = $split_strings[0];
+    $nomeDestinatario = $split_strings[1];
+    $cargoDestinatario = $split_strings[2];
+    
+    $referencia = $_POST['txtReferencia'];
+    
+    $corpo = $_POST['txtCorpo'];
+    
     $dataEmissao = $_POST['data'];
-
+    
+    $emissario = $_POST['selecao'];
+    
     $usuario = $_SESSION["login"];
+   
+    $bdMi = new MYSQL_MIDB();
+    
+    $resultado = $bdMi->sql("SELECT idUsuario, nome, titulo, cargo, portaria, emailInstitucional FROM usuario WHERE emailInstitucional = '$usuario'");
+    $row = mysql_fetch_array($resultado);
+    $idRemetente = $row[0];
+    $nomeRemetente = $row[1];
+    $tituloRemetente = $row[2];
+    $cargoRemetente = $row[3];
+    $portariaRemetente = $row[4];
+    $emailRemetente = $row[5];
+    
+    
 
     //***********CONSULTA DE MEMORANDOS*************/
     //Consulta o "maior ID" de memorando da tabela (ou seja, o último) e o incrementa, gerando o nome do próximo.
-    $ultimoMemorando = $bdMi->sql("SELECT MAX(idMemorando) FROM memorando");
-    $numeroMemorando1 = $ultimoMemorando[0] + 1;
     
-    $numeroMemorando = zerofill($numeroMemorando1);
+    //SO PARA TESTE
+    $SelectNumeroMemorando = $bdMi->sql("SELECT MAX(nMemorandoEmitido) FROM memorando");
+    $numeroMemorando = zerofill(mysql_result($SelectNumeroMemorando, 0));
     
     //********OBTENÇÃO DO USUÁRIO REMETENTE*********/
 
-    $resultadoRemetente = $bdMi->sql("SELECT nome FROM usuario WHERE emailInstitucional = '$usuario'");
-
-    $remetente = mysql_result($resultadoRemetente, 0, 'nome');
-
+   
     //*********OBTENÇÃO DE OUTRAS VARIÁVEIS*********/
 
     $dataEmissao2 = explode('-', $dataEmissao);
@@ -111,7 +131,11 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
         <br>
 
         <?php
-            echo $remetente;
+            echo $nomeRemetente;
+            echo "<br>";
+            echo $emailRemetente;
+            echo "<br>";
+            echo $portariaRemetente;
         ?>         
         
         <br>
@@ -132,7 +156,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
         
         <div align="left">
             <?php
-                echo "MI//$remetente/$numeroMemorando/$ano2[1]";
+                echo "MI//$nomeRemetente/$numeroMemorando/$ano2[1]";
             ?>
         </div>
         
@@ -149,14 +173,14 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
     <br>
     
     <?php
-        echo strtoupper("De: $remetente");
+        echo strtoupper("De: $tituloRemetente $nomeRemetente, $cargoRemetente");
     ?>
     
     <br>
     <br>
     
     <?php
-        echo strtoupper("Para: $txtCargo $txtDestinatario");
+        echo strtoupper("Para: $tituloDestinatario $nomeDestinatario, $cargoDestinatario");
     ?>
     
     <br>
@@ -164,7 +188,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
     
     <b>
         <?php
-            echo "Assunto: $txtTitulo";
+            echo "Assunto: $referencia";
         ?>
     </b>
     
@@ -172,7 +196,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
     <br>
     
     <?php
-        echo $txtCorpo;
+        echo $corpo;
     ?>
     
     <br>
@@ -189,8 +213,8 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
     
     $pdf = new HTML2PDF('P','A4','pt');
     
-    $pdf->pdf->SetAuthor($remetente);
-    $pdf->pdf->SetTitle("MI//$remetente/$numeroMemorando/$ano2[1]");
+    $pdf->pdf->SetAuthor($nomeRemetente);
+    $pdf->pdf->SetTitle("MI//$nomeRemetente/$numeroMemorando/$ano2[1]");
     
     $pdf->writeHTML($content);
     $pdf->Output();
