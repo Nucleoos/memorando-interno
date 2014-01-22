@@ -43,7 +43,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                     $(document).ready(function () {
 
                         //Prepare jTable
-                            $('#PeopleTableContainer').jtable({
+                            $('#MiTableContainer').jtable({
                                     title: 'Memorandos',
                                     paging: true,
                                     pageSize: 10,
@@ -52,9 +52,9 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                     
                                     actions: {
                                             
-                                            listAction: '../control/cConsultar.php?action=list',   
+                                            listAction: '../control/cConsultar-usuario-memorando.php?action=list',   
 
-                                            deleteAction: '../control/cConsultar.php?action=delete'
+                                            deleteAction: '../control/cConsultar-usuario-memorando.php?action=delete'
                                             
                                             
                                     },
@@ -131,7 +131,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             $('#LoadRecordsButton').click(function (e) {
                                 e.preventDefault();
                             
-                                $('#PeopleTableContainer').jtable('load', {
+                                $('#MiTableContainer').jtable('load', {
                                     
                                     pesquisa: $('#pesquisa').val(),
                                     selectCampo: $('#selectCampo').val(),
@@ -144,7 +144,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             
                             $('LoadRecordsButton').click();
                             //Load person list from server
-                            $('#PeopleTableContainer').jtable('load');
+                            $('#MiTableContainer').jtable('load');
 
                             
 
@@ -178,7 +178,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                 </select>
                <button type="submit" id="LoadRecordsButton" style="font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;font-size: 13px; font-weight: 600;">Busca</button>
             </form>
-            <div id="PeopleTableContainer" ></div>
+            <div id="MiTableContainer" ></div>
         </div>
     </div>
     

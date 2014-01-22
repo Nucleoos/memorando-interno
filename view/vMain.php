@@ -66,7 +66,9 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                         <legend>Administrador</legend>
                         <p>
                             <button onclick=\"window.location='vAdmin-cadastrar.php'\">CADASTRAR</button>
-                            <button onclick=\"window.location='vAdmin-gerenciar.php'\">GERENCIAR</button>
+                            <button onclick=\"window.location='vAdmin-gerenciar-unidades.php'\">GERENCIAR UNIDADES</button>
+                            <button onclick=\"window.location='vAdmin-gerenciar-usuarios.php'\">GERENCIAR USUARIOS</button>   
+                            <button onclick=\"window.location='vAdmin-gerenciar-memorandos.php'\">GERENCIAR MEMORANDOS</button>
                         </p>
                     </fieldset>
                 </section>
