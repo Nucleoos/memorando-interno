@@ -83,7 +83,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                                     width: '10%'
                                                     
                                             },
-                                            titulo: {
+                                            referencia: {
                                                     title: 'Titulo',
                                                     width: '10%'
                                             },
