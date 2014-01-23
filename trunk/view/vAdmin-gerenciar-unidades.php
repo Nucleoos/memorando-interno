@@ -22,15 +22,18 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
         
 
         
-        <link href="../resources/jtable/themes/metro/darkgray/jtable.css" rel="stylesheet" type="text/css" />
-        <script src="../resources/js/jquery-1.6.4.min.js" type="text/javascript"></script>
-        <script src="../resources/js/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
+        <<link href="../resources/jtable.2.3.1/themes/metro/darkgray/jtable.min.css" rel="stylesheet" type="text/css" />
         
-        <script src="../resources/jtable/jquery.jtable.js" type="text/javascript"></script>
-        
-        
+        <script src="../resources/js/jquery-1.10.2.min.js" type="text/javascript"></script>
 
-	<link href="../resources/jtable/themes/redmond/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css" />
+        <script src="../resources/jquery-ui/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script><!--
+        <link href="../resources/jquery-ui/css/ui-darkness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" type="text/css" />
+    -->
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+
+        
+        
+        <script src="../resources/jtable.2.3.1/jquery.jtable.min.js" type="text/javascript"></script>
 	
         
 
@@ -53,7 +56,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                     actions: {
                                             
                                             listAction: '../control/cAdmin-gerenciar-unidades.php?action=list',   
-                                            updateAction: '../control/cAdmin-gerenciar-unidades.php?action=edit',
+                                            updateAction: '../control/cAdmin-gerenciar-unidades.php?action=update',
                                             createAction: '../control/cAdmin-gerenciar-unidades.php?action=create',
                                             deleteAction: '../control/cAdmin-gerenciar-unidades.php?action=delete'
                                                    
@@ -61,7 +64,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                     fields: {
                                             
                                             idUnidade: {
-                                                title: 'Id',
+                                                title: 'Número de registro',
                                                 
                                                 key: true,
 						create: false,

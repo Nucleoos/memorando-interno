@@ -6,9 +6,6 @@ try
 	$con = mysql_connect("localhost","root","");
 	mysql_select_db("mi-db", $con);
         
-        include_once '../model/Debug.php';
-        
-
 	//Getting records (listAction)
 	if($_GET["action"] == "list")
 	{
@@ -25,7 +22,7 @@ try
                         $recordCount = $row['RecordCount'];
                         
                         //Get records from database
-                        $result = mysql_query("SELECT m.idMemorando, data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
 
                     }
                     else if( $_POST['selectEmitido'] == "sim")
@@ -35,7 +32,7 @@ try
                         $recordCount = $row['RecordCount'];
 
                         //Get records from database
-                        $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario AND emitido = 1 ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE emitido = 1 ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
 
                     }
                     else if( $_POST['selectEmitido'] == "nao" )
@@ -45,7 +42,7 @@ try
                         $recordCount = $row['RecordCount'];
 
                         //Get records from database
-                        $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario AND emitido = 0 ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, referencia, emissario, corpo, emitido FROM memorando WHERE emitido = 0 ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
 
                     }
                    
@@ -64,45 +61,60 @@ try
                         switch ($select)
                         {
 
-                            case"": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando m, usuario rem, usuario des WHERE m.remetente = rem.idUsuario AND m.destinatario = des.idUsuario AND  m.emitido = 1 AND ( m.data LIKE '%".$pesquisa."%' or rem.nome LIKE '%".$pesquisa."%'  or des.nome LIKE '%".$pesquisa."%' or m.referencia LIKE '%".$pesquisa."%' or m.corpo LIKE '%".$pesquisa."%');");
+                            case"": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE  emitido = 1 AND ( idMemorando LIKE '%".$pesquisa."%' or data LIKE '%".$pesquisa."%' or remetente LIKE '%".$pesquisa."%'  or destinatario LIKE '%".$pesquisa."%' or emissario LIKE '%".$pesquisa."%' or referencia LIKE '%".$pesquisa."%' or corpo LIKE '%".$pesquisa."%');");
                                     $row = mysql_fetch_array($result);
                                     $recordCount = $row['RecordCount'];
 
                                     //Get records from database
-                                    $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario AND m.emitido = 1 AND ( m.data LIKE '%".$pesquisa."%' or rem.nome LIKE '%".$pesquisa."%'  or des.nome LIKE '%".$pesquisa."%' or m.referencia LIKE '%".$pesquisa."%' or m.corpo LIKE '%".$pesquisa."%') ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                                    $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE emitido = 1 AND ( idMemorando LIKE '%".$pesquisa."%' or data LIKE '%".$pesquisa."%' or remetente LIKE '%".$pesquisa."%' or destinatario LIKE '%".$pesquisa."%' or emissario LIKE '%".$pesquisa."%' or referencia LIKE '%".$pesquisa."%' or corpo LIKE '%".$pesquisa."%' ) ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
                             break;
+                            
+                            case"id": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE emitido = 1 AND idMemorando LIKE '%".$pesquisa."%';");
+                                        $row = mysql_fetch_array($result);
+                                        $recordCount = $row['RecordCount'];
 
+                                        //Get records from database
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE emitido = 1 AND idMemorando LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                            break;
+                        
                             case"data": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE emitido = 1 AND data LIKE '%".$pesquisa."%';");
                                         $row = mysql_fetch_array($result);
                                         $recordCount = $row['RecordCount'];
 
                                         //Get records from database
-                                        $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario AND emitido = 1 AND m.data LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE emitido = 1 AND data LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
                             break;
 
-                            case"remetente": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando m, usuario rem WHERE m.remetente = rem.idUsuario AND m.emitido = 1 AND rem.nome LIKE '%".$pesquisa."%';");
+                            case"remetente": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE emitido = 1 AND remetente LIKE '%".$pesquisa."%';");
                                         $row = mysql_fetch_array($result);
                                         $recordCount = $row['RecordCount'];
 
                                         //Get records from database
-                                        $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario AND emitido = 1 AND rem.nome LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
-                            break;
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE emitido = 1 AND remetente LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                                break;
 
-                            case"destinatario": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando m, usuario des WHERE m.remetente = des.idUsuario AND m.emitido = 1 AND des.nome LIKE '%".$pesquisa."%';");
-                            
-                                $row = mysql_fetch_array($result);
+                            case"destinatario": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE emitido = 1 AND destinatario LIKE '%".$pesquisa."%';");
+                                        $row = mysql_fetch_array($result);
                                         $recordCount = $row['RecordCount'];
 
                                         //Get records from database
-                                        $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario AND emitido = 1 AND des.nome LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE emitido = 1 AND destinatario LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
                             break;
+                            
+                            case"emissario": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE emitido = 1 AND emissario LIKE '%".$pesquisa."%';");
+                                        $row = mysql_fetch_array($result);
+                                        $recordCount = $row['RecordCount'];
 
+                                        //Get records from database
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE emitido = 1 AND emissario LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                            break;
+                        
                             case"referencia": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE emitido = 1 AND referencia LIKE '%".$pesquisa."%';");
                                         $row = mysql_fetch_array($result);
                                         $recordCount = $row['RecordCount'];
 
                                         //Get records from database
-                                        $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario AND emitido = 1 AND m.referencia LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE emitido = 1 AND referencia LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
                             break;
 
                             case"corpo": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE emitido = 1 AND corpo LIKE '%".$pesquisa."%';");
@@ -110,7 +122,7 @@ try
                                         $recordCount = $row['RecordCount'];
 
                                         //Get records from database
-                                        $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario AND emitido = 1 AND m.corpo LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE emitido = 1 AND corpo LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
                         }
       
                     }
@@ -120,44 +132,60 @@ try
                         switch ($select)
                         {
 
-                            case"": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando m, usuario rem, usuario des WHERE m.remetente = rem.idUsuario AND m.destinatario = des.idUsuario AND  m.emitido = 0 AND ( m.data LIKE '%".$pesquisa."%' or rem.nome LIKE '%".$pesquisa."%'  or des.nome LIKE '%".$pesquisa."%' or m.referencia LIKE '%".$pesquisa."%' or m.corpo LIKE '%".$pesquisa."%');");
+                            case"": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE  emitido = 0 AND ( idMemorando LIKE '%".$pesquisa."%' or data LIKE '%".$pesquisa."%' or remetente LIKE '%".$pesquisa."%'  or destinatario LIKE '%".$pesquisa."%' or emissario LIKE '%".$pesquisa."%' or referencia LIKE '%".$pesquisa."%' or corpo LIKE '%".$pesquisa."%');");
                                     $row = mysql_fetch_array($result);
                                     $recordCount = $row['RecordCount'];
 
                                     //Get records from database
-                                    $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario AND m.emitido = 0 AND ( m.data LIKE '%".$pesquisa."%' or rem.nome LIKE '%".$pesquisa."%'  or des.nome LIKE '%".$pesquisa."%' or m.referencia LIKE '%".$pesquisa."%' or m.corpo LIKE '%".$pesquisa."%') ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                                    $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE emitido = 0 AND ( idMemorando LIKE '%".$pesquisa."%' or data LIKE '%".$pesquisa."%' or remetente LIKE '%".$pesquisa."%' or destinatario LIKE '%".$pesquisa."%' or emissario LIKE '%".$pesquisa."%' or referencia LIKE '%".$pesquisa."%' or corpo LIKE '%".$pesquisa."%' ) ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
                             break;
+                            
+                            case"id": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE emitido = 0 AND idMemorando LIKE '%".$pesquisa."%';");
+                                        $row = mysql_fetch_array($result);
+                                        $recordCount = $row['RecordCount'];
 
+                                        //Get records from database
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE emitido = 0 AND idMemorando LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                            break;
+                        
                             case"data": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE emitido = 0 AND data LIKE '%".$pesquisa."%';");
                                         $row = mysql_fetch_array($result);
                                         $recordCount = $row['RecordCount'];
 
                                         //Get records from database
-                                        $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario AND emitido = 0 AND m.data LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE emitido = 0 AND data LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
                             break;
 
-                            case"remetente": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando m, usuario rem WHERE m.remetente = rem.idUsuario AND m.emitido = 0 AND rem.nome LIKE '%".$pesquisa."%';");
+                            case"remetente": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE emitido = 0 AND remetente LIKE '%".$pesquisa."%';");
                                         $row = mysql_fetch_array($result);
                                         $recordCount = $row['RecordCount'];
 
                                         //Get records from database
-                                        $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario AND emitido = 0 AND rem.nome LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE emitido = 0 AND remetente LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
                                 break;
 
-                            case"destinatario": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando m, usuario des WHERE m.remetente = des.idUsuario AND m.emitido = 0 AND des.nome LIKE '%".$pesquisa."%';");
+                            case"destinatario": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE emitido = 0 AND destinatario LIKE '%".$pesquisa."%';");
                                         $row = mysql_fetch_array($result);
                                         $recordCount = $row['RecordCount'];
 
                                         //Get records from database
-                                        $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario AND emitido = 0 AND des.nome LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE emitido = 0 AND destinatario LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
                             break;
+                            
+                            case"emissario": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE emitido = 0 AND emissario LIKE '%".$pesquisa."%';");
+                                        $row = mysql_fetch_array($result);
+                                        $recordCount = $row['RecordCount'];
 
+                                        //Get records from database
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE emitido = 0 AND emissario LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                            break;
+                        
                             case"referencia": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE emitido = 0 AND referencia LIKE '%".$pesquisa."%';");
                                         $row = mysql_fetch_array($result);
                                         $recordCount = $row['RecordCount'];
 
                                         //Get records from database
-                                        $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario AND emitido = 0 AND m.referencia LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE emitido = 0 AND referencia LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
                             break;
 
                             case"corpo": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE emitido = 0 AND corpo LIKE '%".$pesquisa."%';");
@@ -165,7 +193,7 @@ try
                                         $recordCount = $row['RecordCount'];
 
                                         //Get records from database
-                                        $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario AND emitido = 0 AND m.corpo LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE emitido = 0 AND corpo LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
                         }
                         
                     }
@@ -174,36 +202,52 @@ try
                         switch ($select)
                         {
 
-                            case"": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando m, usuario rem, usuario des WHERE m.remetente = rem.idUsuario AND m.destinatario = des.idUsuario AND  ( m.data LIKE '%".$pesquisa."%' or rem.nome LIKE '%".$pesquisa."%'  or des.nome LIKE '%".$pesquisa."%' or m.referencia LIKE '%".$pesquisa."%' or m.corpo LIKE '%".$pesquisa."%');");
+                            case"": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE  idMemorando LIKE '%".$pesquisa."%' or data LIKE '%".$pesquisa."%' or remetente LIKE '%".$pesquisa."%'  or destinatario LIKE '%".$pesquisa."%' or emissario LIKE '%".$pesquisa."%' or referencia LIKE '%".$pesquisa."%' or corpo LIKE '%".$pesquisa."%';");
                                     $row = mysql_fetch_array($result);
                                     $recordCount = $row['RecordCount'];
 
                                     //Get records from database
-                                    $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario AND ( m.data LIKE '%".$pesquisa."%' or rem.nome LIKE '%".$pesquisa."%'  or des.nome LIKE '%".$pesquisa."%' or m.referencia LIKE '%".$pesquisa."%' or m.corpo LIKE '%".$pesquisa."%') ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                                    $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE idMemorando LIKE '%".$pesquisa."%' or data LIKE '%".$pesquisa."%' or remetente LIKE '%".$pesquisa."%' or destinatario LIKE '%".$pesquisa."%' or emissario LIKE '%".$pesquisa."%' or referencia LIKE '%".$pesquisa."%' or corpo LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
                             break;
+                            
+                            case"id": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE idMemorando LIKE '%".$pesquisa."%';");
+                                        $row = mysql_fetch_array($result);
+                                        $recordCount = $row['RecordCount'];
 
+                                        //Get records from database
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE idMemorando LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                            break;
+                        
                             case"data": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE data LIKE '%".$pesquisa."%';");
                                         $row = mysql_fetch_array($result);
                                         $recordCount = $row['RecordCount'];
 
                                         //Get records from database
-                                        $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario  AND m.data LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE data LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
                             break;
 
-                            case"remetente": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando m, usuario rem WHERE m.remetente = rem.idUsuario AND rem.nome LIKE '%".$pesquisa."%';");
+                            case"remetente": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE remetente LIKE '%".$pesquisa."%';");
                                         $row = mysql_fetch_array($result);
                                         $recordCount = $row['RecordCount'];
 
                                         //Get records from database
-                                        $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario  AND rem.nome LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE  remetente LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
                                 break;
 
-                            case"destinatario": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando m, usuario des WHERE m.remetente = des.idUsuario AND des.nome LIKE '%".$pesquisa."%';");
+                            case"destinatario": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE destinatario LIKE '%".$pesquisa."%';");
                                         $row = mysql_fetch_array($result);
                                         $recordCount = $row['RecordCount'];
 
                                         //Get records from database
-                                        $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario  AND des.nome LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE destinatario LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                            break;
+                        
+                            case"emissario": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE emissario LIKE '%".$pesquisa."%';");
+                                        $row = mysql_fetch_array($result);
+                                        $recordCount = $row['RecordCount'];
+
+                                        //Get records from database
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE emissario LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
                             break;
 
                             case"referencia": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE referencia LIKE '%".$pesquisa."%';");
@@ -211,7 +255,7 @@ try
                                         $recordCount = $row['RecordCount'];
 
                                         //Get records from database
-                                        $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario  AND m.referencia LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE referencia LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
                             break;
 
                             case"corpo": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM memorando WHERE corpo LIKE '%".$pesquisa."%';");
@@ -219,7 +263,7 @@ try
                                         $recordCount = $row['RecordCount'];
 
                                         //Get records from database
-                                        $result = mysql_query("SELECT m.idMemorando, m.data, rem.nome as remetente, des.nome as destinatario, m.referencia, m.corpo, m.emitido FROM memorando m, usuario rem, usuario des WHERE rem.idUsuario = m.remetente AND des.idUsuario = m.destinatario AND m.corpo LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                                        $result = mysql_query("SELECT idMemorando, data, remetente, destinatario, emissario, referencia, corpo, emitido FROM memorando WHERE corpo LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
                         }                    
                     }                   
                 }              
@@ -231,6 +275,10 @@ try
             
             while($row = mysql_fetch_array($result))
             {
+                $row['destinatario'] = utf8_encode( $row['destinatario'] );
+                $row['emissario'] = utf8_encode( $row['emissario'] );
+                $row['referencia'] = utf8_encode( $row['referencia'] );
+                $row['corpo'] = utf8_encode( $row['corpo'] );
                 
                 $rows[] = $row;
             }
@@ -253,11 +301,52 @@ try
 		$jTableResult['Result'] = "OK";
 		print json_encode($jTableResult);
 	}
+        
+        //Creating a new record (createAction)
+	else if($_GET["action"] == "create")
+	{
+		//Insert record into database
+		$result = mysql_query("INSERT INTO memorando(data, remetente, destinatario, referencia, corpo, emitido, emissario ) VALUES('" . $_POST["data"] . "','" . $_POST["remetente"] . "','" . $_POST["destinatario"] ."','" . $_POST["referencia"] ."','" . $_POST["corpo"] ."','" . $_POST["emitido"] ."','" . $_POST["emissario"] . ");");
+		
+		//Get last inserted record (to return to jTable)
+		$result = mysql_query("SELECT * FROM memorando WHERE idMemorando = LAST_INSERT_ID();");
+		$row = mysql_fetch_array($result);
+
+		//Return result to jTable
+		$jTableResult = array();
+		$jTableResult['Result'] = "OK";
+		$jTableResult['Record'] = $row;
+		print json_encode($jTableResult);
+	}
+	//Updating a record (updateAction)
+	else if($_GET["action"] == "update")
+	{
+		//Update record in
+          
+		$result = mysql_query("UPDATE memorando SET data = '" . $_POST["data"] . "', remetente = " . $_POST["emissario"] . "', referencia = " . $_POST["referencia"] . "', corpo = " . $_POST["corpo"] . "', emitido = " . $_POST["emitido"] . " WHERE idUsuario = " . $_POST["idUsuario"] . ";");
+
+		//Return result to jTable
+		$jTableResult = array();
+		$jTableResult['Result'] = "OK";
+		print json_encode($jTableResult);
+	}
+	//Deleting a record (deleteAction)
+	else if($_GET["action"] == "delete")
+	{
+		//Delete from database
+		$result = mysql_query("DELETE FROM memorando WHERE idMemorando = " . $_POST["idMemorando"] . ";");
+
+		//Return result to jTable
+		$jTableResult = array();
+		$jTableResult['Result'] = "OK";
+		print json_encode($jTableResult);
+	}
 
 	//Close database connection
 	mysql_close($con);
 
 }
+        
 catch(Exception $ex)
 {
     //Return error message
