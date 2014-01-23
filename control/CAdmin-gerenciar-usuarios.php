@@ -15,13 +15,17 @@ try
 		$recordCount = $row['RecordCount'];
 
 		//Get records from database
-		$result = mysql_query("SELECT * FROM usuario ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+		$result = mysql_query("SELECT idUsuario, nome, titulo, cargo, portaria, emailInstitucional as email, permissaoSistema as permissao FROM usuario ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
 		
 		//Add all records to an array
 		$rows = array();
 		while($row = mysql_fetch_array($result))
 		{
-		    $rows[] = $row;
+                    $row['nome'] = utf8_encode($row['nome']);
+                    $row['cargo'] = utf8_encode($row['cargo']);
+                    $row['portaria'] = utf8_encode($row['portaria']);
+                    
+		    $rows[] = $row; 
 		}
 
 		//Return result to jTable
@@ -35,7 +39,7 @@ try
 	else if($_GET["action"] == "create")
 	{
 		//Insert record into database
-		$result = mysql_query("INSERT INTO people(Name, Age, RecordDate) VALUES('" . $_POST["Name"] . "', " . $_POST["Age"] . ",now());");
+		$result = mysql_query("INSERT INTO usuario(nome, titulo, cargo, portaria, permissaoSistema, emailInstitucional, senha) VALUES('" . $_POST["nome"] . "','" . $_POST["titulo"] . "','" . $_POST["cargo"] ."','" . $_POST["portaria"] ."','" . $_POST["permissao"] ."','" . $_POST["email"] ."','" . $_POST["senha"] . ");");
 		
 		//Get last inserted record (to return to jTable)
 		$result = mysql_query("SELECT * FROM people WHERE PersonId = LAST_INSERT_ID();");
@@ -50,8 +54,9 @@ try
 	//Updating a record (updateAction)
 	else if($_GET["action"] == "update")
 	{
-		//Update record in database
-		$result = mysql_query("UPDATE people SET Name = '" . $_POST["Name"] . "', Age = " . $_POST["Age"] . " WHERE PersonId = " . $_POST["PersonId"] . ";");
+		//Update record in
+          
+		$result = mysql_query("UPDATE usuario SET nome = '" . $_POST["nome"] . "', titulo = " . $_POST["titulo"] . "', cargo = " . $_POST["cargo"] . "', portaria = " . $_POST["portaria"] . "', permissaoSistema = " . $_POST["permissao"] . "', emailInstitucional = " . $_POST["email"] . "', senha = " . $_POST["senha"] . " WHERE idUsuario = " . $_POST["idUsuario"] . ";");
 
 		//Return result to jTable
 		$jTableResult = array();
@@ -62,7 +67,7 @@ try
 	else if($_GET["action"] == "delete")
 	{
 		//Delete from database
-		$result = mysql_query("DELETE FROM people WHERE PersonId = " . $_POST["PersonId"] . ";");
+		$result = mysql_query("DELETE FROM usuario WHERE idUsuario = " . $_POST["idUsuario"] . ";");
 
 		//Return result to jTable
 		$jTableResult = array();

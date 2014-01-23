@@ -32,6 +32,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                 @import url("estilo.css") screen; <!--Design para Desktop -->
             </style>
             <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+            
             <script>
                 
                 var idVariable = 1;

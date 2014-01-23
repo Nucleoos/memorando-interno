@@ -5,34 +5,79 @@ try
 	//Open database connection
 	$con = mysql_connect("localhost","root","");
 	mysql_select_db("mi-db", $con);
-
-	//Getting records (listAction)
-	if($_GET["action"] == "list")
+        
+        if($_GET["action"] == "list")
 	{
-		//Get record count
-		$result = mysql_query("SELECT COUNT(*) AS RecordCount FROM unidade;");
-		$row = mysql_fetch_array($result);
-		$recordCount = $row['RecordCount'];
-
-		//Get records from database
-		$result = mysql_query("SELECT idUnidade, nome FROM unidade ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
-		
-		//Add all records to an array
-		$rows = array();
-		while($row = mysql_fetch_array($result))
-		{   
+                
+                if( empty($_POST["pesquisa"] ))
+                {
+                
+                    $pesquisa = NULL;
                     
-                    $row['nome']= utf8_encode($row['nome']);
                     
-		    $rows[] = $row;
-		}
+                    //Get record count
+                    $result = mysql_query("SELECT COUNT(*) AS RecordCount FROM unidade;");
+                    $row = mysql_fetch_array($result);
+                    $recordCount = $row['RecordCount'];
 
-		//Return result to jTable
-		$jTableResult = array();
-		$jTableResult['Result'] = "OK";
-		$jTableResult['TotalRecordCount'] = $recordCount;
-		$jTableResult['Records'] = $rows;
-		print json_encode($jTableResult);
+                    //Get records from database
+                    $result = mysql_query("SELECT idUnidade, nome FROM unidade ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+
+                } 
+                else
+                {
+                    $select = mysql_real_escape_string($_POST['selectCampo']);
+                     
+                    $pesquisa = mysql_real_escape_string($_POST['pesquisa']);
+                   
+                    switch ($select)
+                    {
+
+                        case"": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM unidade WHERE  idUnidade = '".$pesquisa."' or nome LIKE '%".$pesquisa."%';");
+                                $row = mysql_fetch_array($result);
+                                $recordCount = $row['RecordCount'];
+
+                                //Get records from database
+                                $result = mysql_query("SELECT idUnidade, nome FROM unidade WHERE idUnidade = '".$pesquisa."' or nome LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                        break;
+
+                        case"id": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM unidade WHERE idUnidade = '".$pesquisa."';");
+                                    $row = mysql_fetch_array($result);
+                                    $recordCount = $row['RecordCount'];
+
+                                    //Get records from database
+                                    $result = mysql_query("SELECT idUnidade, nome FROM unidade WHERE idUnidade = '".$pesquisa."' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                        break;
+
+                        case"nome": $result =  mysql_query("SELECT COUNT(*) AS RecordCount FROM unidade WHERE nome LIKE '%".$pesquisa."%';");
+                                    $row = mysql_fetch_array($result);
+                                    $recordCount = $row['RecordCount'];
+
+                                    //Get records from database
+                                    $result = mysql_query("SELECT idUnidade, nome FROM unidade WHERE nome LIKE '%".$pesquisa."%' ORDER BY " . $_GET["jtSorting"] . " LIMIT " . $_GET["jtStartIndex"] . "," . $_GET["jtPageSize"] . ";");
+                        break;
+
+                    }                    
+                                   
+                }              
+            
+                
+                
+            //Add all records to an array
+            $rows = array();
+            
+            while($row = mysql_fetch_array($result))
+            {
+                $row['nome'] = utf8_encode( $row['nome'] );
+                 
+                $rows[] = $row;
+            }
+             //Return result to jTable
+             $jTableResult = array();
+             $jTableResult['Result'] = "OK";
+             $jTableResult['TotalRecordCount'] = $recordCount;
+             $jTableResult['Records'] = $rows;
+             print json_encode($jTableResult);
 	}
 	//Creating a new record (createAction)
 	else if($_GET["action"] == "create")
@@ -54,7 +99,7 @@ try
 	else if($_GET["action"] == "update")
 	{
 		//Update record in database
-		$result = mysql_query("UPDATE unidade SET Name = '" . $_POST["nome"] . " WHERE idUnidade = " . $_POST["idUnidade"] . ";");
+		$result = mysql_query("UPDATE unidade SET nome = '" . $_POST["nome"] . "' WHERE idUnidade = " . $_POST["idUnidade"] . ";");
 
 		//Return result to jTable
 		$jTableResult = array();
@@ -65,7 +110,7 @@ try
 	else if($_GET["action"] == "delete")
 	{
 		//Delete from database
-		$result = mysql_query("DELETE FROM unidade WHERE PersonId = " . $_POST["idUnidade"] . ";");
+		$result = mysql_query("DELETE FROM unidade WHERE idUnidade = " . $_POST["idUnidade"] . ";");
 
 		//Return result to jTable
 		$jTableResult = array();

@@ -20,21 +20,22 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
             @import url("../resources/css/estilo.css") screen; Design para Desktop 
         </style> 
         
+        
+        
+        
+        <link href="../resources/jtable.2.3.1/themes/metro/darkgray/jtable.min.css" rel="stylesheet" type="text/css" />
+        
+        <script src="../resources/js/jquery-1.10.2.min.js" type="text/javascript"></script>
+
+        <script src="../resources/jquery-ui/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script><!--
+        <link href="../resources/jquery-ui/css/ui-darkness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" type="text/css" />
+    -->
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
 
         
-        <link href="../resources/jtable/themes/metro/darkgray/jtable.css" rel="stylesheet" type="text/css" />
-        <script src="../resources/js/jquery-1.6.4.min.js" type="text/javascript"></script>
-        <script src="../resources/js/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
         
-        <script src="../resources/jtable/jquery.jtable.js" type="text/javascript"></script>
+        <script src="../resources/jtable.2.3.1/jquery.jtable.min.js" type="text/javascript"></script>
         
-        
-
-	<link href="../resources/jtable/themes/redmond/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css" />
-	
-        
-
-
         
         
         
@@ -48,25 +49,26 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                     paging: true,
                                     pageSize: 10,
                                     sorting: true,
-                                    defaultSorting: 'data ASC',
+                                    defaultSorting: 'idMemorando ASC',
                                     
                                     actions: {
                                                
-                                            listAction: '../control/cConsultar-usuario-memorando.php?action=list',   
-                                            updateAction: '../control/cConsultar-usuario-memorando.php?action=edit',
-                                            createAction: '../control/cConsultar-usuario-memorando.php?action=create',
-                                            deleteAction: '../control/cConsultar-usuario-memorando.php?action=delete'
+                                            listAction: '../control/CAdmin-gerenciar-memorandos.php?action=list',   
+                                            updateAction: '../control/CAdmin-gerenciar-memorandos.php?action=update',
+                                            createAction: '../control/CAdmin-gerenciar-memorandos.php?action=create',
+                                            deleteAction: '../control/CAdmin-gerenciar-memorandos.php?action=delete'
                                             
                                             
                                     },
                                     fields: {
                                             
                                             idMemorando: {
-                                                title: 'Id',
+                                                title: 'Número de registro',
                                             
                                                 key: true,
 						create: false,
 						edit: false,
+                                                list: true
 						
                                             },
                                             
@@ -78,16 +80,38 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                             },
                                             remetente: {
                                                     title: 'Remetente',
-                                                    width: '10%'
+                                                    width: '10%',
+                                                    options: '../control/GetRemetente.php'
                                                     
                                             },
                                             destinatario: {
                                                     title: 'Destinatário',
-                                                    width: '10%'
+                                                    width: '10%',
+                                                    options: '../control/GetDestinatario.php'
                                                     
                                             },
+                                            emissario: {
+                                                    title: 'Emissário',
+                                                    width: '10%',
+                                                    
+                                                    dependsOn: 'remetente',
+                                                    
+                                    
+                                                    options: function (data) {
+                                                        if (data.source == 'list') {
+                                                            //Return url of all countries for optimization.
+                                                            //This method is called for each row on the table and jTable caches options based on this url.
+                                                            return '../control/GetEmissarioDependsOnRemetente.php';
+                                                        }
+
+                                                        //This code runs when user opens edit/create form or changes continental combobox on an edit/create form.
+                                                        //data.source == 'edit' || data.source == 'create'
+                                                        return '../control/GetEmissarioDependsOnRemetente.php?remetente=' + data.dependedValues.remetente;
+                                                    },
+                                               
+                                            },
                                             referencia: {
-                                                    title: 'Titulo',
+                                                    title: 'Referência',
                                                     width: '10%'
                                             },
                                             corpo: {
@@ -155,10 +179,12 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
        
                 <select id="selectCampo">
                     <option value="">Todos</option>
+                    <option value="id">Id</option>
                     <option value="data">Data</option>
                     <option value="remetente">Remetente</option>
                     <option value="destinatario">Destinatário</option>
-                    <option value="titulo">Título</option>
+                    <option value="emissario">Emissário</option>
+                    <option value="referencia">Título</option>
                     <option value="corpo">Corpo</option>
                 </select>
                 
