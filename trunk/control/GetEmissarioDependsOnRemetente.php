@@ -5,11 +5,11 @@
     mysql_select_db("mi-db", $con);
     include_once '../model/Debug.php';
     
-    if( isset($_POST['remetente']) )
-    {
-        $result = mysql_query("SELECT DISTINCT u.nome as DisplayText, u.idUnidade as Value FROM unidade u, memorando m WHERE u.idUnidade = m.emissario AND m.remetente = " . $_POST['remetente'] . ";");
+    if( isset($_GET['remetente']) )
+    {  
+        $result = mysql_query("SELECT DISTINCT u.nome as DisplayText, u.idUnidade as Value FROM usuario des, usuario_has_unidade uhu, unidade u WHERE des.idUsuario = uhu.idUsuario AND uhu.idUnidade = u.idUnidade  AND des.idUsuario = '" . $_GET['remetente'] . "';");
 
-    }    
+    } 
     else
     {
         $result = mysql_query("SELECT nome as DisplayText, idUnidade as Value FROM unidade");
