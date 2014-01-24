@@ -103,11 +103,11 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                                             //This method is called for each row on the table and jTable caches options based on this url.
                                                             return '../control/GetEmissarioDependsOnRemetente.php';
                                                         }
-
+        
                                                         //This code runs when user opens edit/create form or changes continental combobox on an edit/create form.
                                                         //data.source == 'edit' || data.source == 'create'
                                                         return '../control/GetEmissarioDependsOnRemetente.php?remetente=' + data.dependedValues.remetente;
-                                                    },
+                                                    }
                                                
                                             },
                                             referencia: {

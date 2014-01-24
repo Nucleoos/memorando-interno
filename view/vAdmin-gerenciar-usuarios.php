@@ -148,7 +148,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                     <option value="">Todos</option>
                     <option value="id">Id</option>
                     <option value="nome">Nome</option>
-                    <option value="título">Título</option>
+                    <option value="titulo">Título</option>
                     <option value="cargo">Cargo</option>
                     <option value="portaria">Portaria</option>
                     <option value="email">Email</option>
