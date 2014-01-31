@@ -1,5 +1,16 @@
 <?php
 
+function randomPassword() {
+    $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
+    $pass = array(); //remember to declare $pass as an array
+    $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+    for ($i = 0; $i < 8; $i++) {
+        $n = rand(0, $alphaLength);
+        $pass[] = $alphabet[$n];
+    }
+    return implode($pass); //turn the array into a string
+}
+
 try
 {
 	//Open database connection
@@ -268,25 +279,46 @@ try
 	//Creating a new record (createAction)
 	else if($_GET["action"] == "create")
 	{
-		//Insert record into database
-		$result = mysql_query("INSERT INTO usuario(nome, titulo, cargo, portaria, permissaoSistema, emailInstitucional, senha) VALUES('" . $_POST["nome"] . "','" . $_POST["titulo"] . "','" . $_POST["cargo"] ."','" . $_POST["portaria"] ."','" . $_POST["permissao"] ."','" . $_POST["email"] ."','" . $_POST["senha"] . ");");
-		
-		//Get last inserted record (to return to jTable)
-		$result = mysql_query("SELECT * FROM people WHERE PersonId = LAST_INSERT_ID();");
-		$row = mysql_fetch_array($result);
+                $pass = randomPassword();
+                $random_password = md5($pass);
+//                $random = openssl_random_pseudo_bytes(18);
+//                $salt = sprintf('$2y$%02d$%s',
+//                    13, // 2^n cost factor
+//                    substr(strtr(base64_encode($random), '+', '.'), 0, 22)
+//                );
 
+//                $hash = crypt($random_password);
+//                $hash =  password_hash($random_password, PASSWORD_BCRYPT, [ 'cost' => 13 ] ); 
+//		//Insert record into database
+		$result = mysql_query("INSERT INTO usuario(nome, titulo, cargo, portaria, permissaoSistema, emailInstitucional, senha) VALUES('" . $_POST["nome"] . "','" . $_POST["titulo"] . "','" . $_POST["cargo"] ."','" . $_POST["portaria"] ."','" . $_POST["permissao"] ."','" . $_POST["email"] . "','" . $random_password ."');");
+		
+                
+		//Get last inserted record (to return to jTable)
+		$result = mysql_query("SELECT idUsuario, nome, titulo, cargo, portaria, emailInstitucional as email, permissaoSistema as permissao FROM usuario WHERE idUsuario = LAST_INSERT_ID();");
+		
 		//Return result to jTable
-		$jTableResult = array();
+		$rows = array();
+                while($row = mysql_fetch_array($result))
+                {
+                    $row['nome'] = utf8_encode($row['nome']);
+                    $row['cargo'] = utf8_encode($row['cargo']);
+                    $row['portaria'] = utf8_encode($row['portaria']);
+
+                    $rows[] = $row; 
+                }
+
+                //Return result to jTable
+                $jTableResult = array();
+                
 		$jTableResult['Result'] = "OK";
-		$jTableResult['Record'] = $row;
+		$jTableResult['Record'] = $rows;
 		print json_encode($jTableResult);
 	}
 	//Updating a record (updateAction)
 	else if($_GET["action"] == "update")
 	{
 		//Update record in
-          
-		$result = mysql_query("UPDATE usuario SET nome = '" . $_POST["nome"] . "', titulo = " . $_POST["titulo"] . "', cargo = " . $_POST["cargo"] . "', portaria = " . $_POST["portaria"] . "', permissaoSistema = " . $_POST["permissao"] . "', emailInstitucional = " . $_POST["email"] . "', senha = " . $_POST["senha"] . " WHERE idUsuario = " . $_POST["idUsuario"] . ";");
+                $result = mysql_query("UPDATE usuario SET nome = '" . $_POST["nome"] . "', titulo = " . $_POST["titulo"] . "', cargo = " . $_POST["cargo"] . "', portaria = " . $_POST["portaria"] . "', permissaoSistema = " . $_POST["permissao"] . "', emailInstitucional = " . $_POST["email"] . "', senha = " . $_POST["senha"] . " WHERE idUsuario = " . $_POST["idUsuario"] . ";");
 
 		//Return result to jTable
 		$jTableResult = array();

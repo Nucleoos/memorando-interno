@@ -55,10 +55,10 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                     
                                     actions: {
                                             
-                                            listAction: '../control/cAdmin-gerenciar-usuarios.php?action=list',   
-                                            updateAction: '../control/cAdmin-gerenciar-usuarios.php?action=update',
-                                            createAction: '../control/cAdmin-gerenciar-usuarios.php?action=create',
-                                            deleteAction: '../control/cAdmin-gerenciar-usuarios.php?action=delete'
+                                            listAction: '../control/CAdmin-gerenciar-usuarios.php?action=list',   
+                                            updateAction: '../control/CAdmin-gerenciar-usuarios.php?action=update',
+                                            createAction: '../control/CAdmin-gerenciar-usuarios.php?action=create',
+                                            deleteAction: '../control/CAdmin-gerenciar-usuarios.php?action=delete'
                                             
                                             
                                     },
