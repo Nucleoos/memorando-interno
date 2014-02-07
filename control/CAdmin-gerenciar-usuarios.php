@@ -292,7 +292,7 @@ try
 //		//Insert record into database
 		$result = mysql_query("INSERT INTO usuario(nome, titulo, cargo, portaria, permissaoSistema, emailInstitucional, senha) VALUES('" . $_POST["nome"] . "','" . $_POST["titulo"] . "','" . $_POST["cargo"] ."','" . $_POST["portaria"] ."','" . $_POST["permissao"] ."','" . $_POST["email"] . "','" . $random_password ."');");
 		
-                
+                \mail($_POST["email"], "teste", "teste" );
 		//Get last inserted record (to return to jTable)
 		$result = mysql_query("SELECT idUsuario, nome, titulo, cargo, portaria, emailInstitucional as email, permissaoSistema as permissao FROM usuario WHERE idUsuario = LAST_INSERT_ID();");
 		
