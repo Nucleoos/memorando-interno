@@ -37,19 +37,10 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
             <script src="../resources/js/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
             -->
             <!-- TinyMCE -->
-   
-            <script type="text/javascript" src="../resources/tinymce/tinymce.min.js"></script>
-            <script type="text/javascript">
-                tinymce.init({
-                    selector: "textarea",
-                    
-                    plugins : 'advlist autolink link image lists charmap print preview',
+   <script type="text/javascript" src="../resources/jQuery-TE_v.1.4.0/jquery-te-1.4.0.min.js"></script>
+             <link rel="stylesheet" href="../resources/jQuery-TE_v.1.4.0/jquery-te-1.4.0.css">
 
-                    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
-                 });
-            </script>
-            
-             <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+                         <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
 
         <script src="../resources/jquery-ui/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
         
@@ -59,7 +50,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
             <script type="text/javascript">
                 
                 $(document).ready(function(){
-                    
+                    $("textarea").jqte();
                     $('#data').datepicker({ dateFormat: 'yy-mm-dd' });
                     $('#destinatariohidden').hide();
                 
@@ -105,7 +96,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                         focus: function() {
                             // prevent value inserted on focus
                             return false;
-                        },
+                        }
 //                        select: function( event, ui ) {
 //                            $('#destinatario').val(ui.item.id);
 ////                            $('#companyid').val(ui.item.compid);
@@ -127,8 +118,8 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                     $("#salvaMI").click( function(){
                         var destinatario = $("#txtDestinatario").val();   
                         var referencia = $("#txtReferencia").val();                 
-                        tinymce.triggerSave();
                         var corpo = $("#txtCorpo").val();
+                        var anexo = $("#txtAnexo").val();
                         var data = $("#data").val();
                         var selecao = $("#selecao").val();
                         var numeroMemorando = <?php echo $_SESSION["numeroMemorando"];?>;
@@ -138,6 +129,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             destinatario: destinatario,
                             referencia: referencia,
                             corpo: corpo,
+                            anexo: anexo,
                             data: data,
                             emissario: selecao,
                             numeroMemorando: numeroMemorando 
@@ -158,8 +150,8 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                     $("#emiteMI").click( function(){
                         var destinatario = $("#txtDestinatario").val();      
                         var referencia = $("#txtReferencia").val();
-                        tinymce.triggerSave();
                         var corpo = $("#txtCorpo").val();
+                        var anexo = $("#txtAnexo").val();
                         var data = $("#data").val();
                         var selecao = $("#selecao").val();
                         var numeroMemorando = <?php echo $_SESSION["numeroMemorando"];?>;
@@ -169,6 +161,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             destinatario: destinatario,
                             referencia: referencia,
                             corpo: corpo,
+                            anexo: anexo,
                             data: data,
                             selecao: selecao,
                             numeroMemorando: numeroMemorando 
@@ -221,16 +214,16 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                           
                             <p class="campo"><label>Referência: <input id="txtReferencia" class="info" type="text" name="txtReferencia" value="<?php echo $_GET['referencia'] ?>" required></label></p>
 
-                            <p class="campo"><label>Corpo do Memorando Interno: <textarea id="txtCorpo" rows="30" cols="90" name="txtCorpo" value="<?php echo $_GET['corpo'] ?>" ></textarea></label></p>
+                            <p class="campo"><label>Corpo do Memorando Interno: <textarea id="txtCorpo" name="txtCorpo" ><?php echo $_GET['corpo'] ?></textarea></label></p>
                             
-                            <p class="campo"><label><input id="txtFile" class="info" type="file" name="file"></label></p>
-
-                            <p class="campo"><label>Data de Emissão: <input id="data" type="text" name="data"  value="<?php echo $_GET['data'] ?>"required></label></p>
+                            <p class="campo"><label>Anexo (Opcional): <textarea id="txtAnexo" name="txtAnexo" > <?php echo $_GET['corpo'] ?> </textarea></label></p>
+                            
+                            <p class="campo"><label>Data de Emissão: <input id="data" type="text" name="data"  value="<?php echo $_GET['data'] ?>" required></label></p>
                             
 
                             <p class="campo"><label>Emissário: 
                                     <select id="selecao" name="selecao" >
-                                        //<?php
+                                        <?php
                                            
                                         //Consulta de unidades do sistema
                                         //Linhas com os resultados do SELECT

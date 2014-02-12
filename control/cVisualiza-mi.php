@@ -28,6 +28,8 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
     
     $corpo = $_POST['txtCorpo'];
     
+    $anexo = $_POST['txtAnexo'];
+    
     $dataEmissao = $_POST['data'];
     
     $emissario = $_POST['selecao'];
@@ -112,31 +114,30 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
     ob_start();
 ?>
 
-<page backtop="50mm" backbottom="7mm" backleft="10mm" backright="25mm" backimg="../resources/images/logo_ufu.png">
+<page backtop="50mm" backbottom="7mm" backleft="10mm" backright="10mm" >
     
     <page_header align="center" style="width: 100%; border: solid 1px black;">
-        <img src="../resources/images/favicon.gif" alt="logo ufu">
-        <h5>
-            UNIVERSIDADE FEDERAL DE UBERLÂNDIA <br> <br>
-            FACULDADE DE COMPUTAÇÃO <br> 
-            ______________________________________________________________________________________________________
-        </h5>
+        <img src="../resources/images/logo.png" alt="logo" >
     </page_header>
 
     <page_footer align="center"> 
+        
+        <p>
         <?php
             echo '___________________________________________';
         ?>
 
         <br>
-
+        
         <?php
             echo $nomeRemetente;
             echo "<br>";
             echo $emailRemetente;
             echo "<br>";
             echo $portariaRemetente;
-        ?>         
+        ?>
+        </p>
+        
         
         <br>
         <br>
@@ -144,65 +145,72 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
         <h5>
             ______________________________________________________________________________________________________ <br>
             
-                UNIVERSIDADE FEDERAL DE UBERLÂNDIA <br> <br>
+                UNIVERSIDADE FEDERAL DE UBERLÂNDIA <br>
                 FACULDADE DE COMPUTAÇÃO   
         </h5>		
+        
+        <?php
+            $timestamp = date("d/m/Y (H:i:s)");
+            echo 'Documento gerado automaticamente em ' . $timestamp . '.';
+            echo '<br>';
+            echo'Página ' . '1' . ' / ' . '1';
+        ?>
          
     </page_footer> 
     
     <!-- Content here -->
+        
     <p>
-    <div>
-        
-        <div align="left">
-            <?php
-                echo "MI//$nomeRemetente/$numeroMemorando/$ano2[1]";
-            ?>
-        </div>
-        
-        <div align="right">
-            <?php
-                echo "Uberlândia - MG, $dia de $mes2 de $ano";
-            ?>
-        </div>
-            
-    </div>
-    
-    <br>
-    <br>
-    <br>
-    
-    <?php
-        echo strtoupper("De: $tituloRemetente $nomeRemetente, $cargoRemetente");
-    ?>
-    
-    <br>
-    <br>
-    
-    <?php
-        echo strtoupper("Para: $tituloDestinatario $nomeDestinatario, $cargoDestinatario");
-    ?>
-    
-    <br>
-    <br>
-    
-    <b>
         <?php
-            echo "Assunto: $referencia";
+            echo "MI//$nomeRemetente/$numeroMemorando/$ano2[1] 
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Uberlândia - MG, $dia de $mes2 de $ano";
         ?>
-    </b>
-    
-    <br>
-    <br>
-    
-    <?php
-        echo $corpo;
-    ?>
-    
-    <br>
-    <br>
-    
     </p>
+    
+    <br>
+    <br>
+    
+    <p>
+        <?php
+            echo strtoupper("De: $tituloRemetente $nomeRemetente, $cargoRemetente");       
+            echo '<br>';
+            echo strtoupper("Para: $tituloDestinatario $nomeDestinatario, $cargoDestinatario");
+        
+        ?>
+    </p>
+    
+    <br>
+    
+    <br>
+    
+    <p>
+        <b>
+            <?php
+                echo "Assunto: $referencia";
+            ?>
+        </b>
+    </p>
+    
+    <br>
+    
+    <p>
+        <?php
+            echo $corpo;
+        ?>
+    </p>
+    
+    <br>
+    
+    <p>
+        <?php
+            echo 'Anexo:';
+            echo '<br>';
+            echo $anexo;
+        ?>
+    </p>
+    <br>
+    
 </page>
     
 <?php 
@@ -211,7 +219,6 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
     $content = ob_get_clean();
     include_once('../resources/html2pdf/html2pdf.class.php');
     //include_once '../resources/PDFMerger/PDFMerger.php';
-    include_once '../resources/html2pdf/MergePdf.class.php';
     $pdf = new HTML2PDF('P','A4','pt');
     
     $pdf->pdf->SetAuthor($nomeRemetente);

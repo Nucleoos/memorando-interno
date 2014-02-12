@@ -97,7 +97,8 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                             data: {
                                                     title: 'Data',
                                                     type: 'date',
-                                                    width: '10%'
+                                                    width: '10%',
+                                                    displayFormat: 'dd/mm/yy'
                                                     
                                             },
                                             remetente: {

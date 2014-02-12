@@ -130,9 +130,14 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                                 
                                                 sorting: false,
                                                 display: function (data) {
-
-                                                     var argumentos = "idMemorando=" + data.record.idMemorando + "&data=" + data.record.data + "&remetente=" + data.record.remetente + "&destinatario=" + data.record.destinatario + "&emissario=" + data.record.emissario + "&referencia=" + data.record.referencia + "&corpo=" + data.record.corpo;
-                                                     return '<a href="vCriar_2.php?' + argumentos + '"><img alt="edit icon" src="../resources/jtable/themes/metro/edit.png"></a>';
+                                                        
+                                                    if( data.record.emitido == '0' )
+                                                    {
+                                                         var argumentos = "idMemorando=" + data.record.idMemorando + "&data=" + data.record.data + "&remetente=" + data.record.remetente + "&destinatario=" + data.record.destinatario + "&emissario=" + data.record.emissario + "&referencia=" + data.record.referencia + "&corpo=" + data.record.corpo;
+                                                         return '<a href="vCriar_2.php?' + argumentos + '"><img alt="edit icon" src="../resources/jtable.2.3.1/themes/metro/edit.png"></a>';
+                                                    
+                                                    }
+                                                    return '';
                                                       
                                                  }
                                                 
