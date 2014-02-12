@@ -38,16 +38,9 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
             -->
             <!-- TinyMCE -->
    
-            <script type="text/javascript" src="../resources/tinymce/tinymce.min.js"></script>
-            <script type="text/javascript">
-                tinymce.init({
-                    selector: "textarea",
-                    
-                    plugins : 'advlist autolink link image lists charmap print preview',
+            <script type="text/javascript" src="../resources/jQuery-TE_v.1.4.0/jquery-te-1.4.0.min.js"></script>
+             <link rel="stylesheet" href="../resources/jQuery-TE_v.1.4.0/jquery-te-1.4.0.css">
 
-                    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
-                 });
-            </script>
             
              <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
 
@@ -60,6 +53,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                 
                 $(document).ready(function(){
                     
+                    $("textarea").jqte();
                     $('#data').datepicker({ dateFormat: 'yy-mm-dd' });
                     $('#destinatariohidden').hide();
                 
@@ -90,7 +84,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                             id: item.id,
                                             //label: item.nomeUsuario + ", " + item.nomeUnidade,
                                             value: item.titulo + " " + item.nome + ", " + item.cargo              
-                                      };
+                                      }
                                 }));
                             }
                         );
@@ -105,7 +99,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                         focus: function() {
                             // prevent value inserted on focus
                             return false;
-                        },
+                        }
 //                        select: function( event, ui ) {
 //                            $('#destinatario').val(ui.item.id);
 ////                            $('#companyid').val(ui.item.compid);
@@ -127,8 +121,9 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                     $("#salvaMI").click( function(){
                         var destinatario = $("#txtDestinatario").val();   
                         var referencia = $("#txtReferencia").val();                 
-                        tinymce.triggerSave();
+                        //tinymce.triggerSave();
                         var corpo = $("#txtCorpo").val();
+                        var anexo = $("#txtAnexo").val();
                         var data = $("#data").val();
                         var selecao = $("#selecao").val();
                         var numeroMemorando = <?php echo $_SESSION["numeroMemorando"];?>;
@@ -138,6 +133,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             destinatario: destinatario,
                             referencia: referencia,
                             corpo: corpo,
+                            anexo: anexo,
                             data: data,
                             emissario: selecao,
                             numeroMemorando: numeroMemorando 
@@ -149,8 +145,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             }
                             else
                                 alert( "Erro ao salvar" );
-       
-                        });
+                        })
                         
                         return false;
                     });
@@ -158,8 +153,9 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                     $("#emiteMI").click( function(){
                         var destinatario = $("#txtDestinatario").val();      
                         var referencia = $("#txtReferencia").val();
-                        tinymce.triggerSave();
+                        //tinymce.triggerSave();
                         var corpo = $("#txtCorpo").val();
+                        var anexo = $("#txtAnexo").val();
                         var data = $("#data").val();
                         var selecao = $("#selecao").val();
                         var numeroMemorando = <?php echo $_SESSION["numeroMemorando"];?>;
@@ -169,6 +165,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             destinatario: destinatario,
                             referencia: referencia,
                             corpo: corpo,
+                            anexo: anexo,
                             data: data,
                             selecao: selecao,
                             numeroMemorando: numeroMemorando 
@@ -205,7 +202,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                 <!-- Section -->
                 <section id="corpo">
                     <!-- Formul�rio -->
-                    <form id="formMemorando" method="post">
+                    <form id="formMemorando"  method="post">
                         <!-- Fieldset -->
                         <fieldset>
                               
@@ -214,14 +211,15 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             <p id="destinatario" class="campo"><label>Destinatário: <input id="txtDestinatario" class="info" type="text" name="txtDestinatario" required></label></p>   
                           
                             <p class="campo"><label>Referência: <input id="txtReferencia" class="info" type="text" name="txtReferencia" required></label></p>
-
-                            <p class="campo"><label>Corpo do Memorando Interno: <textarea id="txtCorpo" rows="30" cols="90" name="txtCorpo"></textarea></label></p>
+                        
+                            <p class="campo"><label>Corpo do Memorando Interno: <textarea id="txtCorpo" name="txtCorpo"></textarea></label></p>
                             
-                            <p class="campo"><label><input id="txtFile" class="info" type="file" name="file"></label></p>
+                            <p class="campo"><label>Anexo (Opcional): <textarea id="txtAnexo" rows="30" cols="90" name="txtAnexo"></textarea></label></p> 
+
+                            <!--<p class="campo"> <label><input type="file" name="file" accept="application/pdf"> </label></p>-->
 
                             <p class="campo"><label>Data de Emissão: <input id="data" type="text" name="data"  required></label></p>
-                            
-
+                           
                             <p class="campo"><label>Emissário: 
                                     <select id="selecao" name="selecao">
                                         <?php

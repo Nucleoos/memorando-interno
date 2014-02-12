@@ -20,7 +20,7 @@ body{
     background-image: url('../images/bg.gif');
     background-repeat: repeat;
     color: #000000; /*Cor do Texto*/
-    text-align: center; /* Alinha ao Centro*/
+/*    text-align: center;  Alinha ao Centro*/
 
 }
 
@@ -78,8 +78,8 @@ input.login,input.recover{
 }
 
 .campo{
-    text-align: center;
-    margin: 5% auto 5% 12%;
+/*    text-align: center;*/
+    margin: 5% auto 5% 7%;
 }
 
 #campoPesquisa{
@@ -213,7 +213,7 @@ label{
     width:70%;
     margin-right:0.5em;
     padding:2em 0 0 1.5em;
-    text-align:right;
+/*    text-align:right;*/
 }
 
 .labelPesquisa{
