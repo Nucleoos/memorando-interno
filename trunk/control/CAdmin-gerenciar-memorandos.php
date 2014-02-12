@@ -6,6 +6,8 @@ try
 	$con = mysql_connect("localhost","root","");
 	mysql_select_db("mi-db", $con);
         
+
+        
 	//Getting records (listAction)
 	if($_GET["action"] == "list")
 	{
@@ -323,7 +325,7 @@ try
 	{
 		//Update record in
           
-		$result = mysql_query("UPDATE memorando SET data = '" . $_POST["data"] . "', remetente = " . $_POST["emissario"] . "', referencia = " . $_POST["referencia"] . "', corpo = " . $_POST["corpo"] . "', emitido = " . $_POST["emitido"] . " WHERE idUsuario = " . $_POST["idUsuario"] . ";");
+		$result = mysql_query("UPDATE memorando SET data = '" . $_POST["data"] . "', remetente = '" . $_POST["emissario"] . "', referencia = '" . $_POST["referencia"] . "', corpo = '" . $_POST["corpo"] . "', emitido = " . $_POST["emitido"] . " WHERE idMemorando = " . $_POST["idMemorando"] . ";");
 
 		//Return result to jTable
 		$jTableResult = array();

@@ -29,21 +29,32 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
             </style>
             <script type="text/javascript" src="../resources/js/validacao.js"></script>
             
+            <script src="../resources/js/jquery-1.10.2.min.js" type="text/javascript"></script>
+
+        <script src="../resources/jquery-ui/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
+
+<!--            <script src="../resources/js/jquery-1.6.4.min.js" type="text/javascript"></script>
+            <script src="../resources/js/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
+            -->
             <!-- TinyMCE -->
+   
             <script type="text/javascript" src="../resources/tinymce/tinymce.min.js"></script>
+            <script type="text/javascript">
+                tinymce.init({
+                    selector: "textarea",
+                    
+                    plugins : 'advlist autolink link image lists charmap print preview',
+
+                    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+                 });
+            </script>
             
              <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
 
         <script src="../resources/jquery-ui/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
         
  
-            <script type="text/javascript">
-                tinymce.init({
-                    selector: "textarea"
-                 });
-            </script>
-            <script src="../resources/js/jquery-1.6.4.min.js" type="text/javascript"></script>
-            <script src="../resources/js/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
+            
             
             <script type="text/javascript">
                 
@@ -79,7 +90,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                             id: item.id,
                                             //label: item.nomeUsuario + ", " + item.nomeUnidade,
                                             value: item.titulo + " " + item.nome + ", " + item.cargo              
-                                      }
+                                      };
                                 }));
                             }
                         );
@@ -205,6 +216,8 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             <p class="campo"><label>Referência: <input id="txtReferencia" class="info" type="text" name="txtReferencia" required></label></p>
 
                             <p class="campo"><label>Corpo do Memorando Interno: <textarea id="txtCorpo" rows="30" cols="90" name="txtCorpo"></textarea></label></p>
+                            
+                            <p class="campo"><label><input id="txtFile" class="info" type="file" name="file"></label></p>
 
                             <p class="campo"><label>Data de Emissão: <input id="data" type="text" name="data"  required></label></p>
                             

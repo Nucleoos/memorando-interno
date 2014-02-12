@@ -76,18 +76,43 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                             },
                                             remetente: {
                                                     title: 'Remetente',
-                                                    width: '10%'
+                                                    width: '10%',
+                                                    options: '../control/GetRemetente.php'
                                                     
                                             },
                                             destinatario: {
                                                     title: 'Destinatário',
-                                                    width: '10%'
+                                                    width: '10%',
+                                                    options: '../control/GetDestinatario.php'
                                                     
                                             },
+                                            
+                                            emissario: {
+                                                    title: 'Emissário',
+                                                    width: '10%',
+                                                    
+                                                    dependsOn: 'remetente',
+                                                    
+                                    
+                                                    options: function (data) {
+                                                        if (data.source == 'list') {
+                                                            //Return url of all countries for optimization.
+                                                            //This method is called for each row on the table and jTable caches options based on this url.
+                                                            return '../control/GetEmissarioDependsOnRemetente.php';
+                                                        }
+        
+                                                        //This code runs when user opens edit/create form or changes continental combobox on an edit/create form.
+                                                        //data.source == 'edit' || data.source == 'create'
+                                                        return '../control/GetEmissarioDependsOnRemetente.php?remetente=' + data.dependedValues.remetente;
+                                                    }
+                                               
+                                            },
+                                                    
                                             referencia: {
                                                     title: 'Titulo',
                                                     width: '10%'
                                             },
+                                                    
                                             corpo: {
                                                     title: 'Corpo',
                                                     width: '45%'
@@ -106,7 +131,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                                 sorting: false,
                                                 display: function (data) {
 
-                                                     var argumentos = "idMemorando=" + data.record.idMemorando + "&data=" + data.record.data + "&remetente=" + data.record.remetente + "&destinatario=" + data.record.destinatario + "&titulo=" + data.record.titulo + "&corpo=" + data.record.corpo;
+                                                     var argumentos = "idMemorando=" + data.record.idMemorando + "&data=" + data.record.data + "&remetente=" + data.record.remetente + "&destinatario=" + data.record.destinatario + "&emissario=" + data.record.emissario + "&referencia=" + data.record.referencia + "&corpo=" + data.record.corpo;
                                                      return '<a href="vCriar_2.php?' + argumentos + '"><img alt="edit icon" src="../resources/jtable/themes/metro/edit.png"></a>';
                                                       
                                                  }

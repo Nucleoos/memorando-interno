@@ -77,7 +77,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                                
                                             listAction: '../control/CAdmin-gerenciar-memorandos.php?action=list',   
                                             updateAction: '../control/CAdmin-gerenciar-memorandos.php?action=update',
-                                            createAction: '../control/CAdmin-gerenciar-memorandos.php?action=create',
+                                            //createAction: '../control/CAdmin-gerenciar-memorandos.php?action=create',
                                             deleteAction: '../control/CAdmin-gerenciar-memorandos.php?action=delete'
                                             
                                             

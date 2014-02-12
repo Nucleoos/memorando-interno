@@ -207,10 +207,11 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
     
 <?php 
     
+    
     $content = ob_get_clean();
-    
     include_once('../resources/html2pdf/html2pdf.class.php');
-    
+    //include_once '../resources/PDFMerger/PDFMerger.php';
+    include_once '../resources/html2pdf/MergePdf.class.php';
     $pdf = new HTML2PDF('P','A4','pt');
     
     $pdf->pdf->SetAuthor($nomeRemetente);
@@ -218,6 +219,13 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
     
     $pdf->writeHTML($content);
     $pdf->Output();
+    
+    
+ 
+//    $pdfmerger->addPDF($mypdf, '1, 2')
+//	->addPDF($_FILES['file']['name'], 'all')
+//	
+//	->merge('browser');
     
     
     
