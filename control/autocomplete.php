@@ -6,7 +6,7 @@
     
     $term = trim(strip_tags($_GET['term']));//retrieve the search term that autocomplete sends
 
-    $qstring = "SELECT idDestinatario as id, nome, titulo, cargo FROM destinatario WHERE nome LIKE '%".$term."%'";
+    $qstring = "SELECT idDestinatario as id, nome, titulo, cargo FROM destinatario WHERE nome LIKE '%".$term."%' OR titulo LIKE '%".$term."%' OR cargo LIKE '%".$term."%' ";
     $result = mysql_query($qstring);//query the database for entries containing the term
 
     while ($row = mysql_fetch_array($result,MYSQL_ASSOC))//loop through the retrieved values

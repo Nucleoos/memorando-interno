@@ -5,7 +5,7 @@
     mysql_select_db("mi-db", $con);
 
     
-    $result = mysql_query("SELECT nome as DisplayText, idUsuario as Value FROM usuario;");
+    $result = mysql_query("SELECT nome as DisplayText, idDestinatario as Value FROM destinatario;");
     
     //Add all records to an array
     $rows = array();
