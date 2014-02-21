@@ -290,7 +290,7 @@ try
 //                $hash = crypt($random_password);
 //                $hash =  password_hash($random_password, PASSWORD_BCRYPT, [ 'cost' => 13 ] ); 
 //		//Insert record into database
-		$result = mysql_query("INSERT INTO usuario(nome, titulo, cargo, portaria, permissaoSistema, emailInstitucional, senha) VALUES('" . $_POST["nome"] . "','" . $_POST["titulo"] . "','" . $_POST["cargo"] ."','" . $_POST["portaria"] ."','" . $_POST["permissao"] ."','" . $_POST["email"] . "','" . $random_password ."');");
+		$result = mysql_query("INSERT INTO usuario(nome, titulo, cargo, portaria, permissaoSistema, emailInstitucional, senha) VALUES('" . utf8_decode($_POST["nome"]) . "','" . utf8_decode($_POST["titulo"]) . "','" . utf8_decode($_POST["cargo"]) ."','" . $_POST["portaria"] ."','" . $_POST["permissao"] ."','" . $_POST["email"] . "','" . $random_password ."');");
 		
                 //mail($_POST["email"], "teste", "teste" );
 		//Get last inserted record (to return to jTable)
@@ -318,8 +318,14 @@ try
 	else if($_GET["action"] == "update")
 	{
 		//Update record in
-                $result = mysql_query("UPDATE usuario SET nome = '" . $_POST["nome"] . "', titulo = " . $_POST["titulo"] . "', cargo = " . $_POST["cargo"] . "', portaria = " . $_POST["portaria"] . "', permissaoSistema = " . $_POST["permissao"] . "', emailInstitucional = " . $_POST["email"] . "', senha = " . $_POST["senha"] . " WHERE idUsuario = " . $_POST["idUsuario"] . ";");
-
+                $result = mysql_query( "UPDATE usuario SET nome = '" . utf8_decode($_POST["nome"]) . "', 
+                    titulo = '" . utf8_decode($_POST["titulo"]) . "',  
+                    cargo = '" . utf8_decode($_POST["cargo"]) . "', 
+                    portaria = '" . $_POST["portaria"] . "', 
+                    permissaoSistema = '" . $_POST["permissao"] . "', 
+                    emailInstitucional = '" . $_POST["email"] . "', 
+                WHERE idUsuario = '" . $_POST["idUsuario"] . "';");
+                
 		//Return result to jTable
 		$jTableResult = array();
 		$jTableResult['Result'] = "OK";

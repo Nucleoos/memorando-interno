@@ -53,6 +53,14 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                 
                 $(document).ready(function(){
                     
+                    $(':file').change(function(){
+                        var file = this.files[0];
+                        var name = file.name;
+                        var size = file.size;
+                        var type = file.type;
+                        //Your validation
+                    });
+                    
                     $("textarea").jqte();
                     $('#data').datepicker({ dateFormat: 'yy-mm-dd' });
                     $('#destinatariohidden').hide();
@@ -119,6 +127,8 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
    
                     
                     $("#salvaMI").click( function(){
+                        
+                        
                         var destinatario = $("#txtDestinatario").val();   
                         var referencia = $("#txtReferencia").val();                 
                         //tinymce.triggerSave();
@@ -145,6 +155,34 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             }
                             else
                                 alert( "Erro ao salvar" );
+                        })
+                        
+                        return false;
+                    });
+                    
+                    $("#upload").click( function() {
+                        var formData = new FormData($('#file')[0]);                        
+                        $.ajax({
+                            url: '../control/cUpload.php"',  //Server script to process data
+                            type: 'POST',
+                            xhr: function() {  // Custom XMLHttpRequest
+                                var myXhr = $.ajaxSettings.xhr();
+                                if(myXhr.upload){ // Check if upload property exists
+                                    myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
+                                }
+                                return myXhr;
+                            },
+                            //Ajax events
+                            beforeSend: beforeSendHandler,
+                            success: completeHandler,
+                            error: errorHandler,
+                            // Form data
+                            data: formData,
+                            
+                            //Options to tell jQuery not to process data or worry about content-type.
+                            cache: false,
+                            contentType: false,
+                            processData: false
                         })
                         
                         return false;
@@ -202,21 +240,21 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                 <!-- Section -->
                 <section id="corpo">
                     <!-- Formul�rio -->
-                    <form id="formMemorando"  method="post">
+                    <form id="formMemorando"  method="post" enctype="multipart/form-data">
+
                         <!-- Fieldset -->
                         <fieldset>
                               
                             <legend>Criação de Memorando Interno</legend>                             
+                            
                             
                             <p id="destinatario" class="campo"><label>Destinatário: <input id="txtDestinatario" class="info" type="text" name="txtDestinatario" required></label></p>   
                           
                             <p class="campo"><label>Referência: <input id="txtReferencia" class="info" type="text" name="txtReferencia" required></label></p>
                         
                             <p class="campo"><label>Corpo do Memorando Interno: <textarea id="txtCorpo" name="txtCorpo"></textarea></label></p>
-                            
-                            <p class="campo"><label>Anexo (Opcional): <textarea id="txtAnexo" rows="30" cols="90" name="txtAnexo"></textarea></label></p> 
-
-                            <!--<p class="campo"> <label><input type="file" name="file" accept="application/pdf"> </label></p>-->
+                                                    
+                            <p class="campo"> <label><input type="file" name="file" accept="application/pdf"> </label></p>
 
                             <p class="campo"><label>Data de Emissão: <input id="data" type="text" name="data"  required></label></p>
                            
@@ -243,9 +281,10 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             </p>
                             
                             <p class="botao" align="center">
-                                <button type="submit" formaction="../control/cVisualiza-mi.php" formtarget="_blank">VISUALIZAR</button>
+                                <button type="submit" formaction="../control/cUpload.php" formtarget="_blank">VISUALIZAR</button>
                                 <button id="salvaMI" type="submit">SALVAR</button>
                                 <button id="emiteMI" type="submit" >EMITIR</button>
+                                <button id="upload" type="submit" >UPLOAD</button>
                             </p>
                             
                         </fieldset>

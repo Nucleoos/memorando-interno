@@ -3,7 +3,7 @@
 
 //Inicializa a sessão
 session_start("usuario");
-
+    
     //Inclusão do arquivo de conexão com o banco e instanciamento da conexao
     include("../model/conecta-mi-db.php");    
     
