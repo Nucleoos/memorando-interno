@@ -83,7 +83,7 @@ try
 	else if($_GET["action"] == "create")
 	{
 		//Insert record into database
-		$result = mysql_query("INSERT INTO unidade(nome) VALUES('" . $_POST["nome"] . "');");
+		$result = mysql_query("INSERT INTO unidade(nome) VALUES('" . utf8_decode($_POST["nome"]) . "');");
 		
 		//Get last inserted record (to return to jTable)
 		$result = mysql_query("SELECT * FROM unidade WHERE idUnidade = LAST_INSERT_ID();");
@@ -99,7 +99,7 @@ try
 	else if($_GET["action"] == "update")
 	{
 		//Update record in database
-		$result = mysql_query("UPDATE unidade SET nome = '" . $_POST["nome"] . "' WHERE idUnidade = " . $_POST["idUnidade"] . ";");
+		$result = mysql_query("UPDATE unidade SET nome = '" . utf8_decode($_POST["nome"]) . "' WHERE idUnidade = " . $_POST["idUnidade"] . ";");
 
 		//Return result to jTable
 		$jTableResult = array();
