@@ -28,8 +28,6 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
     
     $corpo = $_POST['txtCorpo'];
     
-    $anexo = $_POST['txtAnexo'];
-    
     $dataEmissao = $_POST['data'];
     
     $emissario = $_POST['selecao'];
@@ -202,15 +200,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
     
     <br>
     
-    <p>
-        <?php
-            echo 'Anexo:';
-            echo '<br>';
-            echo $anexo;
-        ?>
-    </p>
-    <br>
-    
+
 </page>
     
 <?php 

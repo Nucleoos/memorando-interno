@@ -67,11 +67,11 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                         //Prepare jTable
                             $('#MiTableContainer').jtable({
                                     messages: ptbrMessages,
-                                    title: 'Memorandos',
-                                    paging: true,
+                                    title: 'Memorandos',paging: true,
                                     pageSize: 10,
                                     sorting: true,
                                     defaultSorting: 'idMemorando ASC',
+                                    
                                     
                                     actions: {
                                                
