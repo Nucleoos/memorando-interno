@@ -57,12 +57,10 @@ session_start("usuario");
             $insertMemorando = $bdMi->sql( "INSERT INTO memorando(data, remetente, destinatario, referencia, corpo, emissario ) 
                                            VALUES( '$dataEmissao', '$idRemetente', '$idDestinatario', '$referencia', '$corpo', '$emissario' )");
             //Verificação de sucesso na inserção da unidade
-            if ($insertMemorando > 0) {
+            if ($insertMemorando == 0) {
 
-              echo true;
-            } else {
-
-              echo false;  
+              echo false;
+              return;
             }
 
         } else{
@@ -72,16 +70,17 @@ session_start("usuario");
                                             WHERE idMemorando = $numeroMemorando");
 
             //Verificação de sucesso na atualizacao da unidade
-            if ($updateMemorando > 0) {
-
-                echo true;
-
-            } else {
+            if ($updateMemorando == 0) {
 
                 echo false;
-
+                return;
             }
         }
+        
+        //Insere anexos
+        
+        echo true;
+        
     }
     else
     {

@@ -125,7 +125,21 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                                     options: { 0: 'Não', 1 : 'Sim' }
                                                    
                                             },
-                                             
+                                            
+                                            anexos: {
+                                                
+                                                sorting: false,
+                                                display: function (data) {
+                                                
+                                                    var argumentos = "idMemorando=" + data.record.idMemorando;
+                                                    return '<a href="vLista-Anexos.php?' + argumentos + '"><img alt="edit icon" src="../resources/jtable.2.3.1/themes/metro/edit.png"></a>';
+
+                                                      
+                                                 }
+                                                
+                                                
+                                            },
+                                            
                                             EditLinkColumn: {
                                                 
                                                 sorting: false,
