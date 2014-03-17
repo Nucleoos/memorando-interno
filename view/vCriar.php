@@ -88,7 +88,9 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
             <script type="text/javascript">
                 
                 $(document).ready(function(){
-                    
+                    $('#fileupload').fileupload({
+                        autoUpload: true
+                    });
                     
                     $("textarea").jqte();
                     $('#data').datepicker({ dateFormat: 'yy-mm-dd' });
@@ -176,10 +178,9 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             numeroMemorando: numeroMemorando 
                         }, 
                         function( retorno ){             
-                            if( retorno )
-                                alert( "Salvo." );
-                            else
-                                alert( "Erro ao salvar" );
+                            
+                           alert( retorno );
+                            
                             
                         });
                         
@@ -255,41 +256,41 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             <p class="campo"><label>Corpo do Memorando Interno: <textarea id="txtCorpo" name="txtCorpo"></textarea></label></p>
                                        
                             <!-- The file upload form used as target for the file upload widget -->
-                        
-                            <!-- Redirect browsers with JavaScript disabled to the origin page -->
-                            <noscript><input type="hidden" name="redirect" value="http://blueimp.github.io/jQuery-File-Upload/"></noscript>
-                            <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
-                           
-                            <div class="fileupload-buttonbar">
-                                
-                                <div class="fileupload-buttons" >
-                                    <!-- The fileinput-button span is used to style the file input field as button -->
-                                    <p class="botao">
-                                    <span class="fileinput-button">
-                                        <span>Add files...</span>
-                                        <input type="file" name="files[]"  accept="application/pdf" multiple>
-                                    </span>
-                                    
-                                    <button type="submit" class="start">Start upload</button>
-                                    <button type="reset" class="cancel">Cancel upload</button>
-                                    <button type="button" class="delete">Delete</button>
-                                    <input type="checkbox" class="toggle">
-                                    </p>
-                                    <!-- The global file processing state -->
-                                    <span class="fileupload-process"></span>
-                                </div>
                             
-                                <!-- The global progress state -->
-                                <div class="fileupload-progress fade" style="display:none">
-                                    <!-- The global progress bar -->
-                                    <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
-                                    <!-- The extended global progress state -->
-                                    <div class="progress-extended">&nbsp;</div>
+                            <div align="center">
+                                <!-- Redirect browsers with JavaScript disabled to the origin page -->
+                                <noscript><input type="hidden" name="redirect" value="http://blueimp.github.io/jQuery-File-Upload/"></noscript>
+                                <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+
+                                <div class="fileupload-buttonbar">
+
+                                    <div class="fileupload-buttons" >
+                                        <!-- The fileinput-button span is used to style the file input field as button -->
+                                        <p class="botao">
+                                        <span class="fileinput-button">
+                                            <span>Add files...</span>
+                                            <input type="file" name="files[]"  accept="application/pdf" multiple>
+                                        </span>
+
+                                        <button type="reset" class="cancel">Cancel upload</button>
+                                        <button type="button" class="delete">Delete</button>
+                                        <input type="checkbox" class="toggle">
+                                        </p>
+                                        <!-- The global file processing state -->
+                                        <span class="fileupload-process"></span>
+                                    </div>
+
+                                    <!-- The global progress state -->
+                                    <div class="fileupload-progress fade" style="display:none">
+                                        <!-- The global progress bar -->
+                                        <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <!-- The extended global progress state -->
+                                        <div class="progress-extended">&nbsp;</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <!-- The table listing the files available for upload/download -->
-                            <table role="presentation"><tbody class="files"></tbody></table>
-                            
+                                <!-- The table listing the files available for upload/download -->
+                                <table role="presentation"><tbody class="files"></tbody></table>
+                           </div>
                            <!-- The template to display files available for upload -->
                             <script id="template-upload" type="text/x-tmpl">
                             {% for (var i=0, file; file=o.files[i]; i++) { %}

@@ -15,7 +15,7 @@ require('UploadHandler.php');
 class CustomUploadHandler extends UploadHandler {
     protected function get_user_id() {
         @session_start();
-        return $_SESSION['login'];
+        return $_SESSION['login'] . '/' . $_SESSION['numeroMemorando'];
     }
 }
 

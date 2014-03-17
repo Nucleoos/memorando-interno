@@ -1,1 +1,7 @@
-1
+UPDATE usuario SET nome = 'laksdjf teste ola', 
+                    titulo = 'alskdjf',  
+                    cargo = 'alksfj', 
+                    portaria = 'daslkfj', 
+                    permissaoSistema = 'user', 
+                    emailInstitucional = 'sdlkfj', 
+                WHERE idUsuario = '94';

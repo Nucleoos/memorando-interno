@@ -290,29 +290,25 @@ try
 //                $hash = crypt($random_password);
 //                $hash =  password_hash($random_password, PASSWORD_BCRYPT, [ 'cost' => 13 ] ); 
 //		//Insert record into database
-
-		$result = mysql_query("INSERT INTO usuario(nome, titulo, cargo, portaria, permissaoSistema, emailInstitucional, senha) VALUES('" . utf8_decode($_POST["nome"]) . "','" . utf8_decode($_POST["titulo"]) . "','" . utf8_decode($_POST["cargo"]) ."','" . $_POST["portaria"] ."','" . $_POST["permissao"] ."','" . $_POST["email"] . "','" . $random_password ."');");
-
-		
                 $result = mysql_query("INSERT INTO usuario(nome, titulo, cargo, portaria, permissaoSistema, emailInstitucional, senha) VALUES('" . $_POST["nome"] . "','" . $_POST["titulo"] . "','" . $_POST["cargo"] ."','" . $_POST["portaria"] ."','" . $_POST["permissao"] ."','" . $_POST["email"] . "','" . $random_password ."');");
                 
-                $nome_mail = $_POST["nome"];
-                $emaildestinatario = $_POST["email"];
-                $senha_mail = $pass;
-                $assunto = 'Cadastro Sistema MI';
-                
-                $mensagemHTML = 'Cadastro efetuado no sistema de emissão de MI
-                                Nome: '.$nome_mail.'
-                                Usuario: '.$emailremetente.'
-                                Assunto: '.$assunto.'
-                                Essa será sua senha: 
-                                             '. $senha_mail .'
-                                ';
-                
-                $headers = "Content-type: text/html; charset=utf-8\r\n";
-                
-                $envio = mail($emaildestinatario, $assunto, $mensagemHTML, $header);
-                
+//                $nome_mail = $_POST["nome"];
+//                $emaildestinatario = $_POST["email"];
+//                $senha_mail = $pass;
+//                $assunto = 'Cadastro Sistema MI';
+//                
+//                $mensagemHTML = 'Cadastro efetuado no sistema de emissão de MI
+//                                Nome: '.$nome_mail.'
+//                                Usuario: '.$emailremetente.'
+//                                Assunto: '.$assunto.'
+//                                Essa será sua senha: 
+//                                             '. $senha_mail .'
+//                                ';
+//                
+//                $headers = "Content-type: text/html; charset=utf-8\r\n";
+//                
+//                $envio = mail($emaildestinatario, $assunto, $mensagemHTML, $header);
+//                
                 
                
                 //mail($_POST["email"], "teste", "teste" );
@@ -344,12 +340,13 @@ try
 	else if($_GET["action"] == "update")
 	{
 		//Update record in
+                
                 $result = mysql_query( "UPDATE usuario SET nome = '" . utf8_decode($_POST["nome"]) . "', 
                     titulo = '" . utf8_decode($_POST["titulo"]) . "',  
                     cargo = '" . utf8_decode($_POST["cargo"]) . "', 
                     portaria = '" . $_POST["portaria"] . "', 
                     permissaoSistema = '" . $_POST["permissao"] . "', 
-                    emailInstitucional = '" . $_POST["email"] . "', 
+                    emailInstitucional = '" . $_POST["email"] . "' 
                 WHERE idUsuario = '" . $_POST["idUsuario"] . "';");
                 
 		//Return result to jTable
