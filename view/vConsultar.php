@@ -132,9 +132,29 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                                 display: function (data) {
                                                 
                                                     var argumentos = "idMemorando=" + data.record.idMemorando;
-                                                    return '<a href="vLista-Anexos.php?' + argumentos + '"><img alt="edit icon" src="../resources/jtable.2.3.1/themes/metro/edit.png"></a>';
+                                                    return '<a href="vLista-Anexos.php?' + argumentos + '" target="_blank" ><img alt="edit icon" src="../resources/images/Editing-Attach-icon.png"></a>';
 
                                                       
+                                                 }
+                                                
+                                                
+                                            },
+                                                
+                                            pdfpreview: {
+                                                
+                                                sorting: false,
+                                                display: function (data) {
+                                                    
+                                                    if( data.record.emitido === '0')
+                                                    {
+                                                        return '<form method="post" action="../control/cVisualiza-mi.php" target="_blank" > <input type="text" name="data" value="'+ data.record.data + '" hidden> <input type="text" name="txtRemetente" value="'+ data.record.remetente + '" hidden> <input type="text" name="txtDestinatario" value="'+ data.record.destinatario + '" hidden> <input type="text" name="selecao" value="'+ data.record.emissario + '" hidden> <input type="text" name="txtReferencia" value="'+ data.record.referencia + '" hidden> <input type="text" name="txtCorpo" value="'+ data.record.corpo + '" hidden> <input type="image" src="../resources/images/FileType-Pdf-icon.png" style="width:16px;"> </form>';
+                                                    }
+                                                    
+                                                    return '<form method="post" action="../control/cVisualiza-mi.php" target="_blank" > <input type="text" name="data" value="'+ data.record.data + '" hidden> <input type="text" name="txtRemetente" value="'+ data.record.remetente + '" hidden> <input type="text" name="txtDestinatario" value="'+ data.record.destinatario + '" hidden> <input type="text" name="selecao" value="'+ data.record.emissario + '" hidden> <input type="text" name="txtReferencia" value="'+ data.record.referencia + '" hidden> <input type="text" name="txtCorpo" value="'+ data.record.corpo + '" hidden> <input type="image" src="../resources/images/FileType-Pdf-icon.png" style="width:50px;" > </form>';
+
+//                                                    var argumentos = "idMemorando=" + data.record.idMemorando + "&data=" + data.record.data + "&remetente=" + data.record.remetente + "&destinatario=" + data.record.destinatario + "&emissario=" + data.record.emissario + "&referencia=" + data.record.referencia + "&corpo=" + data.record.corpo;
+//                                                    return '<a href="../control/cVisualiza-mi.php?' + argumentos + '" target="_blank"><img alt="edit icon" src="../resources/images/FileType-Pdf-icon.png"></a>';
+    
                                                  }
                                                 
                                                 
@@ -145,7 +165,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                                 sorting: false,
                                                 display: function (data) {
                                                         
-                                                    if( data.record.emitido == '0' )
+                                                    if( data.record.emitido === '0' )
                                                     {
                                                          var argumentos = "idMemorando=" + data.record.idMemorando + "&data=" + data.record.data + "&remetente=" + data.record.remetente + "&destinatario=" + data.record.destinatario + "&emissario=" + data.record.emissario + "&referencia=" + data.record.referencia + "&corpo=" + data.record.corpo;
                                                          return '<a href="vCriar_2.php?' + argumentos + '"><img alt="edit icon" src="../resources/jtable.2.3.1/themes/metro/edit.png"></a>';

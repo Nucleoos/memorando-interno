@@ -18,11 +18,24 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
     //**********RECEBIMENTO DAS VARIÁRVEIS**********/
     $txtDestinatario = $_POST['txtDestinatario'];
     
-    $split_strings = preg_split('/[\ \n\,]+/', $txtDestinatario);
+    if(is_numeric( $txtDestinatario ) )
+    {
+        $selectDestinatario = $bdMi->sql("SELECT titulo, nome, cargo FROM destinatario WHERE idDestinatario ='" . $txtDestinatario . "';");
+        $row = mysql_fetch_row($selectDestinatario);
+ 
+        $tituloDestinatario = $row[0];
+        $nomeDestinatario = $row[1];
+        $cargoDestinatario = $row[2];
+    }
+    else
+    {
+        $split_strings = preg_split('/[\ \n\,]+/', $txtDestinatario);
     
-    $tituloDestinatario = $split_strings[0];
-    $nomeDestinatario = $split_strings[1];
-    $cargoDestinatario = $split_strings[2];
+        $tituloDestinatario = $split_strings[0];
+        $nomeDestinatario = $split_strings[1];
+        $cargoDestinatario = $split_strings[2];
+    }
+    
     
     $referencia = $_POST['txtReferencia'];
     
@@ -31,6 +44,13 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
     $dataEmissao = $_POST['data'];
     
     $emissario = $_POST['selecao'];
+    
+    if(is_numeric( $emissario ) )
+    {
+        $selectDestinatario = $bdMi->sql("SELECT nome FROM unidade WHERE idUnidade ='" . $emissario . "';");
+        
+        $emissario = mysql_result($selectDestinatario, 0);
+    }
     
     $usuario = $_SESSION["login"];
    

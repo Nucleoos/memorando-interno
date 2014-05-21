@@ -14,7 +14,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
     <!DOCTYPE HTML>
     <html lang="pt-br">
 
-        <!-- Header --> 
+        <!-- Header -->
         <head>
             <!-- Titulo -->
             <title>Sistema de Memorandos Internos</title>        
@@ -25,7 +25,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
             <!-- CSS -->
             <link href="../resources/css/menu.css" media="screen" rel="stylesheet" type="text/css" />
             <style type="text/css">
-                @import url("../resources/css/estilo.css") screen; Design para Desktop 
+                @import url("../resources/css/estilo.css") screen; Design para Desktop
             </style>
             <script type="text/javascript" src="../resources/js/validacao.js"></script>
             
@@ -48,41 +48,15 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
        
         
         
-        <!-- jQuery UI styles -->
-<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/dark-hive/jquery-ui.css" id="theme">
-<!-- Demo styles -->
-<!--<link rel="stylesheet" href="css/demo.css">-->
-        <!-- blueimp Gallery styles -->
-<!--<link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">-->
-<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
-<link rel="stylesheet" href="../resources/jQuery-File-Upload-9.5.6/css/jquery.fileupload.css">
-<link rel="stylesheet" href="../resources/jQuery-File-Upload-9.5.6/css/jquery.fileupload-ui.css">
-<!-- CSS adjustments for browsers with JavaScript disabled -->
-<noscript><link rel="stylesheet" href="../resources/jQuery-File-Upload-9.5.6/css/jquery.fileupload-noscript.css"></noscript>
-<noscript><link rel="stylesheet" href="../resources/jQuery-File-Upload-9.5.6/css/jquery.fileupload-ui-noscript.css"></noscript>
 
- <!-- The Templates plugin is included to render the upload/download listings -->
-<script src="http://blueimp.github.io/JavaScript-Templates/js/tmpl.min.js"></script>
-<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-<script src="http://blueimp.github.io/JavaScript-Load-Image/js/load-image.min.js"></script>
 
-<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
-<script src="../resources/jQuery-File-Upload-9.5.6/js/jquery.iframe-transport.js"></script>
 <!-- The basic File Upload plugin -->
 <script src="../resources/jQuery-File-Upload-9.5.6/js/jquery.fileupload.js"></script>
-<!-- The File Upload processing plugin -->
-<script src="../resources/jQuery-File-Upload-9.5.6/js/jquery.fileupload-process.js"></script>
-<!-- The File Upload image preview & resize plugin -->
-<script src="../resources/jQuery-File-Upload-9.5.6/js/jquery.fileupload-image.js"></script>
-<!-- The File Upload validation plugin -->
-<script src="../resources/jQuery-File-Upload-9.5.6/js/jquery.fileupload-validate.js"></script>
-<!-- The File Upload user interface plugin -->
-<script src="../resources/jQuery-File-Upload-9.5.6/js/jquery.fileupload-ui.js"></script>
-<!-- The File Upload jQuery UI plugin -->
-<script src="../resources/jQuery-File-Upload-9.5.6/js/jquery.fileupload-jquery-ui.js"></script>
-<!-- The main application script -->
-<script src="../resources/jQuery-File-Upload-9.5.6/js/main.js"></script>
- 
+
+
+
+
+
             
             
             <script type="text/javascript">
@@ -139,19 +113,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             // prevent value inserted on focus
                             return false;
                         }
-//                        select: function( event, ui ) {
-//                            $('#destinatario').val(ui.item.id);
-////                            $('#companyid').val(ui.item.compid);
-////                            $('#c_address').val(ui.item.address);
-////                            $('#c_phone').val(ui.item.phone);
-////                            if (ui.item.problematic!=1){
-////                                $('#companyautocomplete').removeClass("ui-autocomplete-error");
-////                                document.getElementById('Sendbutton').style.display="block";
-////                            } else {
-////                                $('#companyautocomplete').addClass("ui-autocomplete-error");
-////                                document.getElementById('Sendbutton').style.display="none";
-////                            }
-//                        }
+
                       });
                     });
 
@@ -168,15 +130,15 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                         var selecao = $("#selecao").val();
                         var numeroMemorando = <?php echo $_SESSION["numeroMemorando"];?>;
                         
-                        $.post("../control/cSalva-mi.php", 
-                        { 
+                        $.post("../control/cSalva-mi.php",
+                        {
                             destinatario: destinatario,
                             referencia: referencia,
                             corpo: corpo,
                             data: data,
                             emissario: selecao,
-                            numeroMemorando: numeroMemorando 
-                        }, 
+                            numeroMemorando: numeroMemorando
+                        },
                         function( retorno ){             
                             
                            alert( retorno );
@@ -197,16 +159,16 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                         var selecao = $("#selecao").val();
                         var numeroMemorando = <?php echo $_SESSION["numeroMemorando"];?>;
                         
-                        $.post("../control/cEmite-mi.php", 
-                        { 
+                        $.post("../control/cEmite-mi.php",
+                        {
                             destinatario: destinatario,
                             referencia: referencia,
                             corpo: corpo,
                             
                             data: data,
                             emissario: selecao,
-                            numeroMemorando: numeroMemorando 
-                        }, 
+                            numeroMemorando: numeroMemorando
+                        },
                         function( retorno ){
                             if( retorno )
                                 alert( "Emitido." );
@@ -257,40 +219,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                                        
                             <!-- The file upload form used as target for the file upload widget -->
                             
-                            <div align="center">
-                                <!-- Redirect browsers with JavaScript disabled to the origin page -->
-                                <noscript><input type="hidden" name="redirect" value="http://blueimp.github.io/jQuery-File-Upload/"></noscript>
-                                <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
-
-                                <div class="fileupload-buttonbar">
-
-                                    <div class="fileupload-buttons" >
-                                        <!-- The fileinput-button span is used to style the file input field as button -->
-                                        <p class="botao">
-                                        <span class="fileinput-button">
-                                            <span>Add files...</span>
-                                            <input type="file" name="files[]"  accept="application/pdf" multiple>
-                                        </span>
-
-                                        <button type="reset" class="cancel">Cancel upload</button>
-                                        <button type="button" class="delete">Delete</button>
-                                        <input type="checkbox" class="toggle">
-                                        </p>
-                                        <!-- The global file processing state -->
-                                        <span class="fileupload-process"></span>
-                                    </div>
-
-                                    <!-- The global progress state -->
-                                    <div class="fileupload-progress fade" style="display:none">
-                                        <!-- The global progress bar -->
-                                        <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
-                                        <!-- The extended global progress state -->
-                                        <div class="progress-extended">&nbsp;</div>
-                                    </div>
-                                </div>
-                                <!-- The table listing the files available for upload/download -->
-                                <table role="presentation"><tbody class="files"></tbody></table>
-                           </div>
+                            
                            <!-- The template to display files available for upload -->
                             <script id="template-upload" type="text/x-tmpl">
                             {% for (var i=0, file; file=o.files[i]; i++) { %}
@@ -350,7 +279,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
 
                             <p class="campo"><label>Data de Emissão: <input id="data" type="text" name="data"  required></label></p>
                            
-                            <p class="campo"><label>Emissário: 
+                            <p class="campo"><label>Emissário:
                                     <select id="selecao" name="selecao">
                                         <?php
                                         
@@ -379,7 +308,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             </p>
                             
                         </fieldset>
-                    </form>	
+                    </form>﻿  
                 </section>
             </div>
             <?php include("vRodape.html"); ?>

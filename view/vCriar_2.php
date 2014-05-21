@@ -14,7 +14,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
     <!DOCTYPE HTML>
     <html lang="pt-br">
 
-        <!-- Header --> 
+        <!-- Header -->
         <head>
             <!-- Titulo -->
             <title>Sistema de Memorandos Internos</title>        
@@ -25,7 +25,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
             <!-- CSS -->
             <link href="../resources/css/menu.css" media="screen" rel="stylesheet" type="text/css" />
             <style type="text/css">
-                @import url("../resources/css/estilo.css") screen; Design para Desktop 
+                @import url("../resources/css/estilo.css") screen; Design para Desktop
             </style>
             <script type="text/javascript" src="../resources/js/validacao.js"></script>
             
@@ -162,15 +162,15 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                         var selecao = $("#selecao").val();
                         var numeroMemorando = <?php echo $_SESSION["numeroMemorando"];?>;
                         
-                        $.post("../control/cSalva-mi.php", 
-                        { 
+                        $.post("../control/cSalva-mi.php",
+                        {
                             destinatario: destinatario,
                             referencia: referencia,
                             corpo: corpo,
                             data: data,
                             emissario: selecao,
-                            numeroMemorando: numeroMemorando 
-                        }, 
+                            numeroMemorando: numeroMemorando
+                        },
                         function( retorno ){             
                             if( retorno == true )
                             {
@@ -192,16 +192,16 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                         var selecao = $("#selecao").val();
                         var numeroMemorando = <?php echo $_SESSION["numeroMemorando"];?>;
                         
-                        $.post("../control/cEmite-mi.php", 
-                        { 
+                        $.post("../control/cEmite-mi.php",
+                        {
                             destinatario: destinatario,
                             referencia: referencia,
                             corpo: corpo,
                          
                             data: data,
                             emissario: selecao,
-                            numeroMemorando: numeroMemorando 
-                        }, 
+                            numeroMemorando: numeroMemorando
+                        },
                         function( retorno ){
                             if( retorno )
                             {
@@ -248,7 +248,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             $selectDestinatario = $bdMi->sql("SELECT titulo, nome, cargo FROM destinatario WHERE idDestinatario ='" . $_GET['destinatario'] . "';");
                              
                             $row = mysql_fetch_row($selectDestinatario);
-                            echo $row[0] . " " . $row[1] . ", " . $row[2]; 
+                            echo $row[0] . " " . $row[1] . ", " . $row[2];
                                     ?>" required></label></p>   
                           
                             <p class="campo"><label>Referência: <input id="txtReferencia" class="info" type="text" name="txtReferencia" value="<?php echo $_GET['referencia'] ?>" required></label></p>
@@ -349,7 +349,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             <p class="campo"><label>Data de Emissão: <input id="data" type="text" name="data"  value="<?php echo $_GET['data'] ?>" required></label></p>
                             
 
-                            <p class="campo"><label>Emissário: 
+                            <p class="campo"><label>Emissário:
                                     <select id="selecao" name="selecao" >
                                         <?php
                                            
@@ -382,7 +382,7 @@ if (isset($_SESSION["login"]) and ($_SESSION["senha"])) {
                             </p>
                             
                         </fieldset>
-                    </form>	
+                    </form>  
                 </section>
             </div>
             <?php include("vRodape.html"); ?>
